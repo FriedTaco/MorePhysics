@@ -1,0 +1,4 @@
+name: MorePhysics
+main: com.FriedTaco.taco.MorePhysics.MorePhysics
+version: 1.0
+commands:
