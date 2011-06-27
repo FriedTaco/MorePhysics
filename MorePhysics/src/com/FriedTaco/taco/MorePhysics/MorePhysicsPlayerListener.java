@@ -106,7 +106,6 @@ public class MorePhysicsPlayerListener extends PlayerListener
     				double diffX = event.getTo().getX() - event.getFrom().getX();
     				double diffZ = event.getTo().getZ() - event.getFrom().getZ();
     				Vector v = event.getPlayer().getVelocity();
-    				System.out.println(diffX);
     				if((!(event.getTo().getY() > event.getFrom().getY())) && (under.getTypeId() != 79) && plugin.movement && !event.getPlayer().isSneaking())
     				{
 	    				if(diffX > tollerance && Math.abs(diffX) < 1)
