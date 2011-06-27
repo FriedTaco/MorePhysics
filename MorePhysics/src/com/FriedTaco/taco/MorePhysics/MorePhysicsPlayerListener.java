@@ -13,6 +13,8 @@ import org.bukkit.util.Vector;
 public class MorePhysicsPlayerListener extends PlayerListener 
 {
 	final MorePhysics plugin;
+	double tollerance = .08;
+	double min = .001;
 
     public MorePhysicsPlayerListener(MorePhysics instance) 
     {
@@ -70,6 +72,7 @@ public class MorePhysicsPlayerListener extends PlayerListener
     {
     	Block on = event.getPlayer().getWorld().getBlockAt(event.getTo());
     	Block under = event.getPlayer().getWorld().getBlockAt(new Location(event.getPlayer().getWorld(), event.getTo().getBlockX(),event.getTo().getBlockY()-1,event.getTo().getBlockZ()));
+    	
     	if(on != null && under != null)
     	{
     		if((on.getTypeId() == 8 || on.getTypeId() == 9) && (under.getTypeId() == 8 || under.getTypeId() == 9) && plugin.swimming)
@@ -95,25 +98,25 @@ public class MorePhysicsPlayerListener extends PlayerListener
     				if(i != null)
     					modifier += weight(i.getTypeId());
     			}
-    			if(modifier > 0)
+    			if(modifier >= 0)
     			{
     				//double x = event.getPlayer().getVelocity().getX();
-    				float x = (float) event.getPlayer().getVelocity().getX();
-    				//double z = event.getPlayer().getVelocity().getZ();
-    				float z = (float) event.getPlayer().getVelocity().getZ();
+    				double x = event.getPlayer().getVelocity().getX();
+    				double z = event.getPlayer().getVelocity().getZ();
+    				double diffX = event.getTo().getX() - event.getFrom().getX();
+    				double diffZ = event.getTo().getZ() - event.getFrom().getZ();
     				Vector v = event.getPlayer().getVelocity();
-    				if((!(event.getTo().getY() > event.getFrom().getY())) && (under.getTypeId() != 79) && plugin.movement)
+    				System.out.println(diffX);
+    				if((!(event.getTo().getY() > event.getFrom().getY())) && (under.getTypeId() != 79) && plugin.movement && !event.getPlayer().isSneaking())
     				{
-	    				if(event.getTo().getX() > event.getFrom().getX())
-	    					x -= (modifier/5);
-	    				else if(event.getTo().getX() < event.getFrom().getX())
-	    					x += (modifier/5);
-	    				if(event.getTo().getZ() > event.getFrom().getZ())
-	    					z -= (modifier/5);
-	    				else if(event.getTo().getZ() < event.getFrom().getZ())
-	    					z += (modifier/5);
-	    				v.setX(x);
-	    				v.setZ(z);
+	    				if(diffX > tollerance && Math.abs(diffX) < 1)
+	    					v.setX(x-(modifier/8));
+	    				else if(diffX < tollerance && Math.abs(diffX) < 1)
+	    					v.setX(x+(modifier/8));
+	    				if(diffZ > tollerance && Math.abs(diffZ) < 1)
+	    					v.setX(z-(modifier/8));
+	    				else if(diffZ < tollerance && Math.abs(diffZ) < 1)
+	    					v.setX(z+(modifier/8));
 	    				event.getPlayer().setVelocity(v);
     				}
     					
