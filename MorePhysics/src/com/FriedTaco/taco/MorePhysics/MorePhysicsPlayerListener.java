@@ -13,7 +13,6 @@ import org.bukkit.util.Vector;
 public class MorePhysicsPlayerListener extends PlayerListener 
 {
 	final MorePhysics plugin;
-	double tollerance = .08;
 	double min = .001;
 
     public MorePhysicsPlayerListener(MorePhysics instance) 
@@ -84,10 +83,12 @@ public class MorePhysicsPlayerListener extends PlayerListener
     					modifier += weight(i.getTypeId());
     			}
     			if(modifier > 0)
+    			{
     				if(event.getTo().getY() > event.getFrom().getY())
     					event.getPlayer().setVelocity(new Vector(event.getPlayer().getVelocity().getX(),0-modifier,event.getPlayer().getVelocity().getZ()));
     				else
     					event.getPlayer().setVelocity(new Vector(event.getPlayer().getVelocity().getX(),0-(modifier*4),event.getPlayer().getVelocity().getZ()));
+    			}
     			
     		}
     		else if(on.getTypeId() == 0)
@@ -98,7 +99,7 @@ public class MorePhysicsPlayerListener extends PlayerListener
     				if(i != null)
     					modifier += weight(i.getTypeId());
     			}
-    			if(modifier >= 0)
+    			if(modifier > 0)
     			{
     				//double x = event.getPlayer().getVelocity().getX();
     				double x = event.getPlayer().getVelocity().getX();
@@ -108,13 +109,13 @@ public class MorePhysicsPlayerListener extends PlayerListener
     				Vector v = event.getPlayer().getVelocity();
     				if((!(event.getTo().getY() > event.getFrom().getY())) && (under.getTypeId() != 79) && plugin.movement && !event.getPlayer().isSneaking())
     				{
-	    				if(diffX > tollerance && Math.abs(diffX) < 1)
+	    				if(diffX > .06 && Math.abs(diffX) < 1)
 	    					v.setX(x-(modifier/8));
-	    				else if(diffX < tollerance && Math.abs(diffX) < 1)
+	    				else if(diffX < .06 && Math.abs(diffX) < 1)
 	    					v.setX(x+(modifier/8));
-	    				if(diffZ > tollerance && Math.abs(diffZ) < 1)
+	    				if(diffZ > .06 && Math.abs(diffZ) < 1)
 	    					v.setX(z-(modifier/8));
-	    				else if(diffZ < tollerance && Math.abs(diffZ) < 1)
+	    				else if(diffZ < .06 && Math.abs(diffZ) < 1)
 	    					v.setX(z+(modifier/8));
 	    				event.getPlayer().setVelocity(v);
     				}
