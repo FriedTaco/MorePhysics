@@ -24,45 +24,45 @@ public class MorePhysicsPlayerListener extends PlayerListener
     	switch(id)
     	{
     		case 298:
-    			return .002;	
+    			return plugin.lhat;	
     		case 299:
-    			return .01;	
+    			return plugin.lshirt;	
     		case 300:
-    			return .008;	
+    			return plugin.lpants;	
     		case 301:
-    			return .002;	
+    			return plugin.lboots;	
     		case 302:
-    			return .01;
+    			return plugin.chat;
     		case 303:
-    			return .05;
+    			return plugin.cshirt;
     		case 304:
-    			return .03;
+    			return plugin.cpants;
     		case 305:
-    			return .01;
+    			return plugin.cboots;
     		case 306:
-    			return .02;
+    			return plugin.ihat;
     		case 307:
-    			return .06;
+    			return plugin.ishirt;
     		case 308:
-    			return .04;
+    			return plugin.ipants;
     		case 309:
-    			return .02;
+    			return plugin.iboots;
     		case 310:
-    			return .005;
+    			return plugin.dhat;
     		case 311:
-    			return .03;
+    			return plugin.dshirt;
     		case 312:
-    			return .02;
+    			return plugin.dpants;
     		case 313:
-    			return .005;
+    			return plugin.dboots;
     		case 314:
-    			return .04;
+    			return plugin.ghat;
     		case 315:
-    			return .08;
+    			return plugin.gshirt;
     		case 316:
-    			return .07;
+    			return plugin.gpants;
     		case 317:
-    			return .04;
+    			return plugin.gboots;
     		default:
     			return 0;
     	}
