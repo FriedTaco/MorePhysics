@@ -65,13 +65,36 @@ package com.FriedTaco.taco.MorePhysics;
 		            FileWriter writer = null;
 		            try {
 		                writer = new FileWriter(dir + File.separator + "MorePhysics.properties");
-		                writer.write("MorePhysics v 1.0 configuration\r\n\n");
-		                writer.write("#Allow boats to sink\r\n");
+		                writer.write("MorePhysics v 1.2 configuration\r\n\n");
+		                writer.write("#Allow boats to sink.\r\n");
 		                writer.write("BoatsSink=true \r\n\n");
-		                writer.write("#Allow armour to affect movement on land\r\n");
+		                writer.write("#Allow armour to affect movement on land.\r\n");
 		                writer.write("MovementAffected=true\r\n");
-		                writer.write("#Allow armour to affect movement in water\r\n");
+		                writer.write("#Allow armour to affect movement in water.\r\n");
 		                writer.write("SwimmingAffected=true\r\n\n");
+		                writer.write("#The following are the weights of armour.\r\n");
+		                writer.write("#These are values out of 100 and are predefined by default.\r\n");
+		                writer.write("#Tampering with these values may result in players becoming conscious of their weight.\r\n");
+		                writer.write("Leather_Helm=2\r\n");
+		                writer.write("Leather_Chest=10\r\n");
+		                writer.write("Leather_Pants=8\r\n");
+		                writer.write("Leather_Boots=2\r\n");
+		                writer.write("Iron_Helm=20\r\n");
+		                writer.write("Iron_Chest=60\r\n");
+		                writer.write("Iron_Pants=40\r\n");
+		                writer.write("Iron_Boots=20\r\n");
+		                writer.write("Gold_Helm=40\r\n");
+		                writer.write("Gold_Chest=80\r\n");
+		                writer.write("Gold_Pants=70\r\n");
+		                writer.write("Gold_Boots=40\r\n");
+		                writer.write("Diamond_Helm=5\r\n");
+		                writer.write("Diamond_Chest=30\r\n");
+		                writer.write("Diamond_Pants=20\r\n");
+		                writer.write("Diamond_Boots=5\r\n");
+		                writer.write("Chain_Helm=10\r\n");
+		                writer.write("Chain_Chest=50\r\n");
+		                writer.write("Chain_Pants=30\r\n");
+		                writer.write("Chain_Boots=10\r\n");
 		                
 		                } catch (Exception e) {
 		                log.log(Level.SEVERE,

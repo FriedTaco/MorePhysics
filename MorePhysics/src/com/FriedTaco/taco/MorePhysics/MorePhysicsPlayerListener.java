@@ -101,24 +101,41 @@ public class MorePhysicsPlayerListener extends PlayerListener
     			}
     			if(modifier > 0)
     			{
+    				//Location loc = event.getTo();
     				//double x = event.getPlayer().getVelocity().getX();
     				double x = event.getPlayer().getVelocity().getX();
     				double z = event.getPlayer().getVelocity().getZ();
     				double diffX = event.getTo().getX() - event.getFrom().getX();
     				double diffZ = event.getTo().getZ() - event.getFrom().getZ();
     				Vector v = event.getPlayer().getVelocity();
-    				if((!(event.getTo().getY() > event.getFrom().getY())) && (under.getTypeId() != 79) && plugin.movement && !event.getPlayer().isSneaking())
+    				Vector orig = v.clone();
+    				if(((Math.abs(event.getTo().getY() - event.getFrom().getY()) < .1)) && (under.getTypeId() != 79) && plugin.movement && !event.getPlayer().isSneaking())
     				{
-	    				if(diffX > .06 && Math.abs(diffX) < 1)
+	    				if(Math.abs(diffX) > .06 && Math.abs(diffX) < 1)
+	    				{
 	    					v.setX(x-(modifier/8));
+	    					//loc.setX(loc.getX()-(modifier/3));
+	    				}
 	    				else if(diffX < .06 && Math.abs(diffX) < 1)
+	    				{
 	    					v.setX(x+(modifier/8));
+	    					//loc.setX(loc.getX()+(modifier/3));
+	    				}
 	    				if(diffZ > .06 && Math.abs(diffZ) < 1)
+	    				{
 	    					v.setX(z-(modifier/8));
+	    					//loc.setZ(loc.getZ()-(modifier/3));
+	    				}
 	    				else if(diffZ < .06 && Math.abs(diffZ) < 1)
+	    				{
 	    					v.setX(z+(modifier/8));
-	    				event.getPlayer().setVelocity(v);
-    				}
+	    					//loc.setZ(loc.getZ()+(modifier/3));
+	    				}
+	    				if(event.getTo().distance(event.getFrom()) > .1)
+	    					event.getPlayer().setVelocity(v);
+	    				System.out.println(x);
+	    				//event.getPlayer().teleport(loc);    				
+	    			}
     					
     			}
     		}
