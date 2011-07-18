@@ -107,9 +107,11 @@ public class MorePhysicsPlayerListener extends PlayerListener
     				double z = event.getPlayer().getVelocity().getZ();
     				double diffX = event.getTo().getX() - event.getFrom().getX();
     				double diffZ = event.getTo().getZ() - event.getFrom().getZ();
+    				double diffY = Math.abs(event.getTo().getY() - event.getFrom().getY());
     				Vector v = event.getPlayer().getVelocity();
     				Vector orig = v.clone();
-    				if(((Math.abs(event.getTo().getY() - event.getFrom().getY()) < .1)) && (under.getTypeId() != 79) && plugin.movement && !event.getPlayer().isSneaking())
+    				System.out.println(diffY);
+    				if((diffY < .01 && under.getTypeId() != 79 && plugin.movement && !event.getPlayer().isSneaking()))
     				{
 	    				if(Math.abs(diffX) > .06 && Math.abs(diffX) < 1)
 	    				{
@@ -133,7 +135,6 @@ public class MorePhysicsPlayerListener extends PlayerListener
 	    				}
 	    				if(event.getTo().distance(event.getFrom()) > .1)
 	    					event.getPlayer().setVelocity(v);
-	    				System.out.println(x);
 	    				//event.getPlayer().teleport(loc);    				
 	    			}
     					
