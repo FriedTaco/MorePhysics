@@ -14,6 +14,7 @@ package com.FriedTaco.taco.MorePhysics;
 	import org.bukkit.event.Event.Priority;
 	import org.bukkit.event.Event;
 	import org.bukkit.event.player.PlayerLoginEvent;
+	import org.bukkit.inventory.ItemStack;
 	import org.bukkit.plugin.PluginDescriptionFile;
 	import org.bukkit.plugin.java.JavaPlugin;
 	import org.bukkit.plugin.PluginManager;
@@ -31,17 +32,18 @@ package com.FriedTaco.taco.MorePhysics;
 		private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();  
 	    private final MorePhysicsPlayerListener playerListener  = new MorePhysicsPlayerListener(this);
 	    private final MorePhysicsVehicleListener VehicleListener = new MorePhysicsVehicleListener(this);
+	    private final MorePhysicsBlockListener BlockListener = new MorePhysicsBlockListener(this);
 		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
 		@SuppressWarnings("unused")
 		private static Yaml yaml = new Yaml(new SafeConstructor());
 		public static PermissionHandler Permissions;
-		public boolean movement,swimming,boats;		
+		public boolean movement,swimming,boats,pistons,exemptions;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
-		static String mainDirectory = "plugins/MorePhysics";
+		static String mainDirectory = "thiss/MorePhysics";
 		static File config = new File(mainDirectory + File.separator + "config.dat");
 		static Properties properties = new Properties(); 
 
-	   
+		   
 		 private void setupPermissions() {
 		      Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
 		      if (MorePhysics.Permissions == null) 
@@ -73,6 +75,10 @@ package com.FriedTaco.taco.MorePhysics;
 		                writer.write("MovementAffected=true\r\n");
 		                writer.write("#Allow armour to affect movement in water.\r\n");
 		                writer.write("SwimmingAffected=true\r\n\n");
+		                writer.write("#Allow pistons to launch players.\r\n");
+		                writer.write("PistonLaunch=true\r\n\n");
+		                writer.write("#Allow people to be exempt from physics (Requires permissions node)\r\n");
+		                writer.write("AllowExemptions=true\r\n\n");
 		                writer.write("#The following are the weights of armour.\r\n");
 		                writer.write("#These are values out of 100 and are predefined by default.\r\n");
 		                writer.write("#Tampering with these values may result in players becoming conscious of their weight.\r\n");
@@ -169,6 +175,7 @@ package com.FriedTaco.taco.MorePhysics;
 	        pm.registerEvent(Event.Type.VEHICLE_DAMAGE, VehicleListener, Priority.Normal, this);
 	        pm.registerEvent(Event.Type.VEHICLE_DESTROY, VehicleListener, Priority.Normal, this);
 	        pm.registerEvent(Event.Type.VEHICLE_MOVE, VehicleListener, Priority.Normal, this);
+	        pm.registerEvent(Event.Type.BLOCK_PISTON_EXTEND, BlockListener, Priority.Normal, this);
 	        PluginDescriptionFile pdfFile = this.getDescription();
 	        System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 	        setupPermissions();
@@ -189,6 +196,65 @@ package com.FriedTaco.taco.MorePhysics;
 		public void recordEvent(PlayerLoginEvent event) {
 			// TODO Auto-generated method stub
 			
+		}
+		double weight(int id)
+	    {
+	    	switch(id)
+	    	{
+	    		case 298:
+	    			return this.lhat;	
+	    		case 299:
+	    			return this.lshirt;	
+	    		case 300:
+	    			return this.lpants;	
+	    		case 301:
+	    			return this.lboots;	
+	    		case 302:
+	    			return this.chat;
+	    		case 303:
+	    			return this.cshirt;
+	    		case 304:
+	    			return this.cpants;
+	    		case 305:
+	    			return this.cboots;
+	    		case 306:
+	    			return this.ihat;
+	    		case 307:
+	    			return this.ishirt;
+	    		case 308:
+	    			return this.ipants;
+	    		case 309:
+	    			return this.iboots;
+	    		case 310:
+	    			return this.dhat;
+	    		case 311:
+	    			return this.dshirt;
+	    		case 312:
+	    			return this.dpants;
+	    		case 313:
+	    			return this.dboots;
+	    		case 314:
+	    			return this.ghat;
+	    		case 315:
+	    			return this.gshirt;
+	    		case 316:
+	    			return this.gpants;
+	    		case 317:
+	    			return this.gboots;
+	    		default:
+	    			return 0;
+	    	}
+	    }
+		
+		double getTotalWeight(Player player)
+		{
+			double modifier = 0;
+			for(ItemStack i : player.getInventory().getArmorContents())
+			{
+				if(i != null)
+					modifier += weight(i.getTypeId());
+			}
+			return modifier;
 		}
 	}
 

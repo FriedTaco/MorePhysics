@@ -2,3 +2,11 @@ name: MorePhysics
 main: com.FriedTaco.taco.MorePhysics.MorePhysics
 version: 1.2
 commands:
+permissions:
+    morephysics.*:
+        description: Gives access to all morephysics commands/features.
+        children:
+            morephysics.exempt: true
+    morephysics.exempt:
+        description: Exempts player from physics
+        default: op
