@@ -68,7 +68,7 @@ package com.FriedTaco.taco.MorePhysics;
 		            FileWriter writer = null;
 		            try {
 		                writer = new FileWriter(dir + File.separator + "MorePhysics.properties");
-		                writer.write("MorePhysics v 1.2 configuration\r\n\n");
+		                writer.write("MorePhysics v 1.3 configuration\r\n\n");
 		                writer.write("#Allow boats to sink.\r\n");
 		                writer.write("BoatsSink=true \r\n\n");
 		                writer.write("#Allow armour to affect movement on land.\r\n");
@@ -154,6 +154,8 @@ package com.FriedTaco.taco.MorePhysics;
 		          cshirt = properties.getDouble("Chain_Chest",50)/1000;
 		          cpants = properties.getDouble("Chain_Pants",30)/1000;
 		          cboots = properties.getDouble("Chain_Boots",10)/1000;
+		          pistons = properties.getBoolean("PistonLaunch", true);
+		          exemptions = properties.getBoolean("AllowExemptions", true);
 		        } catch (Exception e) {
 		            log.log(Level.SEVERE,
 		                    "Exception while reading from MorePhysics.properties", e);
