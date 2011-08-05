@@ -68,7 +68,7 @@ package com.FriedTaco.taco.MorePhysics;
 		            FileWriter writer = null;
 		            try {
 		                writer = new FileWriter(dir + File.separator + "MorePhysics.properties");
-		                writer.write("MorePhysics v 1.3 configuration\r\n\n");
+		                writer.write("MorePhysics v 1.4 configuration\r\n\n");
 		                writer.write("#Allow boats to sink.\r\n");
 		                writer.write("BoatsSink=true \r\n\n");
 		                writer.write("#Allow armour to affect movement on land.\r\n");
