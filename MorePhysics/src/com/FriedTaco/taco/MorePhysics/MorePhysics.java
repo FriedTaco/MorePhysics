@@ -37,9 +37,9 @@ package com.FriedTaco.taco.MorePhysics;
 		@SuppressWarnings("unused")
 		private static Yaml yaml = new Yaml(new SafeConstructor());
 		public static PermissionHandler Permissions;
-		public boolean movement,swimming,boats,pistons,exemptions;		
+		public boolean movement,swimming,boats,pistons,exemptions,pistonsB;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
-		static String mainDirectory = "thiss/MorePhysics";
+		static String mainDirectory = "plugins/MorePhysics";
 		static File config = new File(mainDirectory + File.separator + "config.dat");
 		static Properties properties = new Properties(); 
 
@@ -75,8 +75,10 @@ package com.FriedTaco.taco.MorePhysics;
 		                writer.write("MovementAffected=true\r\n");
 		                writer.write("#Allow armour to affect movement in water.\r\n");
 		                writer.write("SwimmingAffected=true\r\n\n");
-		                writer.write("#Allow pistons to launch players.\r\n");
+		                writer.write("#Allow pistons to launch players and other entities. (Mobs, dropped items, arrows, etc.)\r\n");
 		                writer.write("PistonLaunch=true\r\n\n");
+		                writer.write("#Allow pistons to launch blocks.\r\n");
+		                writer.write("PistonLaunchBlocks=true\r\n\n");
 		                writer.write("#Allow people to be exempt from physics (Requires permissions node)\r\n");
 		                writer.write("AllowExemptions=true\r\n\n");
 		                writer.write("#The following are the weights of armour.\r\n");
@@ -155,6 +157,7 @@ package com.FriedTaco.taco.MorePhysics;
 		          cpants = properties.getDouble("Chain_Pants",30)/1000;
 		          cboots = properties.getDouble("Chain_Boots",10)/1000;
 		          pistons = properties.getBoolean("PistonLaunch", true);
+		          pistonsB = properties.getBoolean("PistonLaunchBlocks", true);
 		          exemptions = properties.getBoolean("AllowExemptions", true);
 		        } catch (Exception e) {
 		            log.log(Level.SEVERE,
