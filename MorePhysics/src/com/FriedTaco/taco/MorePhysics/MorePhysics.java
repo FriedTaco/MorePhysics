@@ -1,50 +1,44 @@
 package com.FriedTaco.taco.MorePhysics;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginManager;
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
+import org.bukkit.plugin.Plugin;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
-	import java.io.File;
-	import java.io.FileWriter;
-	import java.io.IOException;
-	import java.util.logging.Level;
-	import java.util.logging.Logger;
-	import java.util.ArrayList;
-	import java.util.HashMap;
-	import java.util.Properties;
-	import org.bukkit.entity.Boat;
-	import org.bukkit.entity.Player;
-	import org.bukkit.event.Event.Priority;
-	import org.bukkit.event.Event;
-	import org.bukkit.event.player.PlayerLoginEvent;
-	import org.bukkit.inventory.ItemStack;
-	import org.bukkit.plugin.PluginDescriptionFile;
-	import org.bukkit.plugin.java.JavaPlugin;
-	import org.bukkit.plugin.PluginManager;
-	import com.nijiko.permissions.PermissionHandler;
-	import com.nijikokun.bukkit.Permissions.Permissions;
-	import org.bukkit.plugin.Plugin;
-	import org.yaml.snakeyaml.Yaml;
-	import org.yaml.snakeyaml.constructor.SafeConstructor;
-
-
-
-
-	public class MorePhysics extends JavaPlugin {
-		public static final Logger log = Logger.getLogger("Minecraft");
-		private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();  
-	    private final MorePhysicsPlayerListener playerListener  = new MorePhysicsPlayerListener(this);
-	    private final MorePhysicsVehicleListener VehicleListener = new MorePhysicsVehicleListener(this);
-	    private final MorePhysicsBlockListener BlockListener = new MorePhysicsBlockListener(this);
-		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
-		@SuppressWarnings("unused")
-		private static Yaml yaml = new Yaml(new SafeConstructor());
-		public static PermissionHandler Permissions;
-		public boolean movement,swimming,boats,pistons,exemptions,pistonsB;		
-		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
-		static String mainDirectory = "plugins/MorePhysics";
-		static File config = new File(mainDirectory + File.separator + "config.dat");
-		static Properties properties = new Properties(); 
-
-		   
-		 private void setupPermissions() {
+public class MorePhysics extends JavaPlugin {
+	public static final Logger log = Logger.getLogger("Minecraft");
+	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();  
+    private final MorePhysicsPlayerListener playerListener  = new MorePhysicsPlayerListener(this);
+    private final MorePhysicsVehicleListener VehicleListener = new MorePhysicsVehicleListener(this);
+    private final MorePhysicsBlockListener BlockListener = new MorePhysicsBlockListener(this);
+	public static ArrayList<Boat> sinking = new ArrayList<Boat>();
+	@SuppressWarnings("unused")
+	private static Yaml yaml = new Yaml(new SafeConstructor());
+	public static PermissionHandler Permissions;
+	public boolean movement,swimming,boats,pistons,exemptions,pistonsB;		
+	public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
+	static String mainDirectory = "plugins/MorePhysics";
+	static File config = new File(mainDirectory + File.separator + "config.dat");
+	static Properties properties = new Properties(); 
+ private void setupPermissions() {
 		      Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
 		      if (MorePhysics.Permissions == null) 
 		      {
