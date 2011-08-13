@@ -1,0 +1,80 @@
+                            /*
+                            for(int x=1; x<16; x++)
+                            {
+                                if(b.get(i).getRelative(0,1,0).getTypeId() == 0)
+                                {
+                                    b.get(i).getRelative(0,1,0).setTypeId(b.get(i).getTypeId());
+                                    b.get(i).setTypeId(0);
+                                    b.set(i,b.get(i).getRelative(0,1,0));
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else if(event.getDirection().name().equalsIgnoreCase("north"))
+                        {
+                            for(int x=1; x<8; x++)
+                            {
+                                if(b.get(i).getRelative(-1,0,0).getTypeId() == 0)
+                                {
+                                    b.get(i).getRelative(-1,0,0).setTypeId(b.get(i).getTypeId());
+                                    b.get(i).setTypeId(0);
+                                    b.set(i,b.get(i).getRelative(-1,0,0));
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else if(event.getDirection().name().equalsIgnoreCase("south"))
+                        {
+                            for(int x=1; x<8; x++)
+                            {
+                                if(b.get(i).getRelative(1,0,0).getTypeId() == 0)
+                                {
+                                    b.get(i).getRelative(1,0,0).setTypeId(b.get(i).getTypeId());
+                                    b.get(i).setTypeId(0);
+                                    b.set(i,b.get(i).getRelative(1,0,0));
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else if(event.getDirection().name().equalsIgnoreCase("west"))
+                        {
+                            for(int x=1; x<8; x++)
+                            {
+                                if(b.get(i).getRelative(0,0,1).getTypeId() == 0)
+                                {
+                                    b.get(i).getRelative(0,0,1).setTypeId(b.get(i).getTypeId());
+                                    b.get(i).setTypeId(0);
+                                    b.set(i,b.get(i).getRelative(0,0,1));
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else if(event.getDirection().name().equalsIgnoreCase("east"))
+                        {
+                            for(int x=1; x<8; x++)
+                            {
+                                if(b.get(i).getRelative(0,0,-1).getTypeId() == 0)
+                                {
+                                    b.get(i).getRelative(0,0,-1).setTypeId(b.get(i).getTypeId());
+                                    b.get(i).setTypeId(0);
+                                    b.set(i,b.get(i).getRelative(0,0,-1));
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        */

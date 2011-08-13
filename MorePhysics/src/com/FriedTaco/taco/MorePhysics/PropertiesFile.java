@@ -684,4 +684,26 @@ public final class PropertiesFile {
 
         save();
     }
+    
+    /**
+     * Split the value of key by delim and return it as a list.
+     * 
+     * @see #getString()
+     * @param path The key we will be addressing.
+     * @param delim The delim to split by.
+     */
+     public List getList(String key, String delim) {
+         List<String> vlist = new ArrayList<String>();
+         if (this.containsKey(key)) {
+             String value = this.getString(key);
+             String[] strarr = value.split(delim);
+             for (String a : strarr)
+             {
+                 vlist.add(a);
+             }
+             return vlist;
+         }
+         
+         return vlist;
+     }
 }
