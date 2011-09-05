@@ -23,6 +23,7 @@ import java.util.List;
 	import com.nijiko.permissions.PermissionHandler;
 	import com.nijikokun.bukkit.Permissions.Permissions;
 	import org.bukkit.plugin.Plugin;
+import org.bukkit.util.config.Configuration;
 	import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -41,11 +42,13 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 		@SuppressWarnings("unused")
 		private static Yaml yaml = new Yaml(new SafeConstructor());
 		public static PermissionHandler Permissions;
-		public boolean movement,swimming,boats,pistons,exemptions,pistonsB;		
+		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
 		static String mainDirectory = "plugins/MorePhysics";
 		static File config = new File(mainDirectory + File.separator + "config.dat");
 		static Properties properties = new Properties(); 
+		protected static Configuration Config;
+
 
 		   
 		 private void setupPermissions() {
@@ -60,7 +63,66 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 		          }
 		      }
 		  }
-		 
+		 public void loadConfig(){
+	            Config = getConfiguration();
+            	Config.setProperty("Boats_Sink", true);
+            	Config.setProperty("Movement_Affected", true);
+            	Config.setProperty("Swimming_Affected", true);
+            	Config.setProperty("Pistons_Launch_Entities", true);
+            	Config.setProperty("Pistons_Launch_Blocks", true);
+            	Config.setProperty("Allow_Physics_Exemptions", true);
+            	Config.setProperty("Bounce_Causing_Blocks", "1 2 12 35");
+        	    Config.setProperty("Leather_Helm",2);
+                Config.setProperty("Leather_Chest",10);
+                Config.setProperty("Leather_Pants",8);
+                Config.setProperty("Leather_Boots",2);
+                Config.setProperty("Iron_Helm",20);
+                Config.setProperty("Iron_Chest",60);
+                Config.setProperty("Iron_Pants",40);
+                Config.setProperty("Iron_Boots",20);
+                Config.setProperty("Gold_Helm",40);
+                Config.setProperty("Gold_Chest",80);
+                Config.setProperty("Gold_Pants",70);
+                Config.setProperty("Gold_Boots",40);
+                Config.setProperty("Diamond_Helm",5);
+                Config.setProperty("Diamond_Chest",30);
+                Config.setProperty("Diamond_Pants",20);
+                Config.setProperty("Diamond_Boots",5);
+                Config.setProperty("Chain_Helm",10);
+                Config.setProperty("Chain_Chest",50);
+                Config.setProperty("Chain_Pants",30);
+                Config.setProperty("Chain_Boots",10);
+	            Config.setHeader("#MorePhysics configuration");
+	            boats = Config.getBoolean("Boats_Sink", true);
+	            swimming = Config.getBoolean("Movement_Affected", true);
+	            movement = Config.getBoolean("Swimming_Affected", true);
+	            lhat = Config.getDouble("Leather_Helm",2)/1000;
+	            lshirt = Config.getDouble("Leather_Chest",10)/1000;
+	            lpants = Config.getDouble("Leather_Pants",8)/1000;
+	            lboots = Config.getDouble("Leather_Boots",2)/1000;
+	            ihat = Config.getDouble("Iron_Helm",20)/1000;
+	            ishirt = Config.getDouble("Iron_Chest",60)/1000;
+	            ipants = Config.getDouble("Iron_Pants",40)/1000;
+	            iboots = Config.getDouble("Iron_Boots",20)/1000;
+	          	ghat = Config.getDouble("Gold_Helm",40)/1000;
+	          	gshirt = Config.getDouble("Gold_Chest",80)/1000;
+	          	gpants = Config.getDouble("Gold_Pants",70)/1000;
+	          	gboots = Config.getDouble("Gold_Boots",40)/1000;
+	          	dhat = Config.getDouble("Diamond_Helm",5)/1000;
+	          	dshirt = Config.getDouble("Diamond_Chest",30)/1000;
+	          	dpants = Config.getDouble("Diamond_Pants",20)/1000;
+	          	dboots = Config.getDouble("Diamond_Boots",5)/1000;
+	          	chat = Config.getDouble("Chain_Helm",10)/1000;
+	          	cshirt = Config.getDouble("Chain_Chest",50)/1000;
+	          	cpants = Config.getDouble("Chain_Pants",30)/1000;
+	          	cboots = Config.getDouble("Chain_Boots",10)/1000;
+	          	pistons = Config.getBoolean("Pistons_Launch_Entities", true);
+	          	pistonsB = Config.getBoolean("Pistons_Launch_Blocks", true);
+	          	exemptions = Config.getBoolean("Allow_Physics_Exemptions", true);
+	          	bouncyBlocks = Arrays.asList(Config.getString("Bounce_Causing_Blocks", "").split(" "));
+	            Config.save();
+	        }
+
 		 public void loadSettings() throws Exception
 		 {
 			 if (!this.getDataFolder().exists())
@@ -72,21 +134,21 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 		            FileWriter writer = null;
 		            try {
 		                writer = new FileWriter(dir + File.separator + "MorePhysics.properties");
-		                writer.write("MorePhysics v 1.4 configuration\r\n\n");
+		                writer.write("MorePhysics v 1.4 configuration\r\n");
 		                writer.write("#Allow boats to sink.\r\n");
-		                writer.write("BoatsSink=true \r\n\n");
+		                writer.write("BoatsSink=true \r\n");
 		                writer.write("#Allow armour to affect movement on land.\r\n");
 		                writer.write("MovementAffected=true\r\n");
 		                writer.write("#Allow armour to affect movement in water.\r\n");
-		                writer.write("SwimmingAffected=true\r\n\n");
+		                writer.write("SwimmingAffected=true\r\n");
 		                writer.write("#Allow pistons to launch players and other entities. (Mobs, dropped items, arrows, etc.)\r\n");
-		                writer.write("PistonLaunch=true\r\n\n");
+		                writer.write("PistonLaunch=true\r\n");
 		                writer.write("#Allow pistons to launch blocks.\r\n");
-		                writer.write("PistonLaunchBlocks=true\r\n\n");
+		                writer.write("PistonLaunchBlocks=true\r\n");
 		                writer.write("#Allow people to be exempt from physics (Requires permissions node)\r\n");
-		                writer.write("AllowExemptions=true\r\n\n");
+		                writer.write("AllowExemptions=true\r\n");
 		                writer.write("#Blocks that are bouncy, must be separated by spaces. Leave this empty to exempt this feature.\r\n");
-		                writer.write("BouncyBlocks=1 2 12 35 \r\n\n");
+		                writer.write("BouncyBlocks=1 2 12 35 \r\n");
 		                writer.write("#The following are the weights of armour.\r\n");
 		                writer.write("#These are values out of 100 and are predefined by default.\r\n");
 		                writer.write("#Tampering with these values may result in players becoming conscious of their weight.\r\n");
@@ -182,6 +244,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			loadConfig();
 	        PluginManager pm = getServer().getPluginManager();
 	        pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 	        pm.registerEvent(Event.Type.VEHICLE_DAMAGE, VehicleListener, Priority.Normal, this);

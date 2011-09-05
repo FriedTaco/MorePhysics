@@ -20,9 +20,12 @@ public class MorePhysicsVehicleListener extends VehicleListener implements Cance
     }
     public void onVehicleDamage(VehicleDamageEvent	event)
     {
-    	if(event.getVehicle() instanceof Boat && !MorePhysics.sinking.contains((Boat) event.getVehicle()) && !event.getVehicle().isDead() && event.getDamage() > 2 && plugin.boats)
+    	if(plugin.boats && event.getVehicle() instanceof Boat)
     	{
-    		MorePhysics.sinking.add((Boat) event.getVehicle());
+	    	if(!MorePhysics.sinking.contains((Boat) event.getVehicle()) && !event.getVehicle().isDead() && (event.getDamage() >= 2 || ((Boat)event.getVehicle()).getLastDamageCause() != null))
+	    	{
+	    		MorePhysics.sinking.add((Boat) event.getVehicle());
+	    	}
     	}
     }
 	public void onVehicleDestroy(VehicleDestroyEvent event) 	
@@ -34,12 +37,18 @@ public class MorePhysicsVehicleListener extends VehicleListener implements Cance
 	}
 	public void onVehicleMove(VehicleMoveEvent event)
 	{
+		
 		if(plugin.boats)
 		{
-			Block on = event.getVehicle().getWorld().getBlockAt(event.getTo());
-			Block under = event.getVehicle().getWorld().getBlockAt(new Location(event.getVehicle().getWorld(), event.getTo().getBlockX(), event.getTo().getBlockY()-1,event.getTo().getBlockZ()));
-			if(event.getVehicle() instanceof Boat && MorePhysics.sinking.contains((Boat) event.getVehicle()) && ((on.getTypeId() == 8 || on.getTypeId() == 9) || (under.getTypeId() == 8 || under.getTypeId() == 9)))
-				event.getVehicle().setVelocity(new Vector(event.getVehicle().getVelocity().getX(), -.05, event.getVehicle().getVelocity().getZ()));
+			if(event.getVehicle() instanceof Boat && MorePhysics.sinking.contains((Boat) event.getVehicle()))
+			{
+				Block on = event.getVehicle().getWorld().getBlockAt(event.getTo());
+				Block under = event.getVehicle().getWorld().getBlockAt(new Location(event.getVehicle().getWorld(), event.getTo().getBlockX(), event.getTo().getBlockY()-1,event.getTo().getBlockZ()));
+				if(((on.getTypeId() == 8 || on.getTypeId() == 9) || (under.getTypeId() == 8 || under.getTypeId() == 9)))
+				{
+					event.getVehicle().setVelocity(new Vector(event.getVehicle().getVelocity().getX(), -.05, event.getVehicle().getVelocity().getZ()));
+				}
+			}
 		}
 	}
 	@Override
