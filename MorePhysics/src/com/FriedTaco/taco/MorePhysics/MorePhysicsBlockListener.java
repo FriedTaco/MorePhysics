@@ -189,7 +189,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    {			
 			for(Entity e : event.getBlock().getChunk().getEntities())
 			{
-				if(e.getLocation().distance(event.getBlock().getLocation()) < 2)// && e instanceof LivingEntity)
+				if(e.getLocation().distance(event.getBlock().getLocation()) < 2.2)// && e instanceof LivingEntity)
 				{
 					v = e.getVelocity();					
 					if(event.getDirection().name().equalsIgnoreCase("up") && (e.getLocation().getBlock().getRelative(0,-1,0).equals(event.getBlock()) || e.getWorld().getBlockAt(new Location(e.getWorld(), (int)e.getLocation().getBlockX(),(int)e.getLocation().getBlockY()-1,(int)e.getLocation().getBlockZ())).equals(event.getBlock())))
@@ -200,7 +200,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 							v.setY(v.getY()+2);
 						e.teleport(e.getLocation().add(0, 1, 0));	
 					}
-					else if(event.getDirection().name().equalsIgnoreCase("north") && e.getLocation().getBlock().getRelative(1,0,0).equals(event.getBlock()) || e.getWorld().getBlockAt(new Location(e.getWorld(), (int)e.getLocation().getBlockX()+1,(int)e.getLocation().getBlockY(),(int)e.getLocation().getBlockZ())).equals(event.getBlock()))
+					else if(event.getDirection().name().equalsIgnoreCase("north") && (e.getLocation().getBlock().getRelative(1,0,0).equals(event.getBlock()) || e.getLocation().getBlock().getRelative(1,1,0).equals(event.getBlock())))
 					{
 						if(e instanceof Player)
 							v.setX(v.getX()-(4-(plugin.getTotalWeight((Player) e))));
@@ -208,7 +208,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 							v.setX(v.getX()-4);
 						e.teleport(e.getLocation().add(-1, 0, 0));
 					}
-					else if(event.getDirection().name().equalsIgnoreCase("south") && e.getLocation().getBlock().getRelative(-1,0,0).equals(event.getBlock()) || e.getWorld().getBlockAt(new Location(e.getWorld(), (int)e.getLocation().getBlockX()-1,(int)e.getLocation().getBlockY(),(int)e.getLocation().getBlockZ())).equals(event.getBlock()))
+					else if(event.getDirection().name().equalsIgnoreCase("south") && (e.getLocation().getBlock().getRelative(-1,0,0).equals(event.getBlock()) || e.getLocation().getBlock().getRelative(-1,1,0).equals(event.getBlock())))
 					{
 						if(e instanceof Player)
 							v.setX(v.getX()+(4-(plugin.getTotalWeight((Player) e))));
@@ -216,7 +216,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 							v.setX(v.getX()+4);
 						e.teleport(e.getLocation().add(1, 0, 0));
 					}
-					else if(event.getDirection().name().equalsIgnoreCase("west") && e.getLocation().getBlock().getRelative(0,0,-1).equals(event.getBlock()) || e.getWorld().getBlockAt(new Location(e.getWorld(), (int)e.getLocation().getBlockX(),(int)e.getLocation().getBlockY(),(int)e.getLocation().getBlockZ()-1)).equals(event.getBlock()))
+					else if(event.getDirection().name().equalsIgnoreCase("west") && (e.getLocation().getBlock().getRelative(0,0,-1).equals(event.getBlock()) || e.getLocation().getBlock().getRelative(0,1,-1).equals(event.getBlock())))
 					{
 						if(e instanceof Player)
 							v.setZ(v.getZ()+(4-(plugin.getTotalWeight((Player) e))));
@@ -224,7 +224,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 							v.setZ(v.getZ()+4);
 						e.teleport(e.getLocation().add(0, 0, 1));
 					}
-					else if(event.getDirection().name().equalsIgnoreCase("west") && e.getLocation().getBlock().getRelative(0,0,1).equals(event.getBlock()) || e.getWorld().getBlockAt(new Location(e.getWorld(), (int)e.getLocation().getBlockX(),(int)e.getLocation().getBlockY(),(int)e.getLocation().getBlockZ()+1)).equals(event.getBlock()))
+					else if(event.getDirection().name().equalsIgnoreCase("west") && (e.getLocation().getBlock().getRelative(0,0,1).equals(event.getBlock()) || e.getLocation().getBlock().getRelative(0,1,1).equals(event.getBlock())))
 					{
 						if(e instanceof Player)
 							v.setZ(v.getZ()-(4-(plugin.getTotalWeight((Player) e))));

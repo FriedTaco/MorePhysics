@@ -7,7 +7,9 @@ package com.FriedTaco.taco.MorePhysics;
 	import java.util.logging.Level;
 	import java.util.logging.Logger;
 	import java.util.ArrayList;
+import java.util.Arrays;
 	import java.util.HashMap;
+import java.util.List;
 	import java.util.Properties;
 	import org.bukkit.entity.Boat;
 	import org.bukkit.entity.Player;
@@ -22,7 +24,7 @@ package com.FriedTaco.taco.MorePhysics;
 	import com.nijikokun.bukkit.Permissions.Permissions;
 	import org.bukkit.plugin.Plugin;
 	import org.yaml.snakeyaml.Yaml;
-	import org.yaml.snakeyaml.constructor.SafeConstructor;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 
 
@@ -33,7 +35,9 @@ package com.FriedTaco.taco.MorePhysics;
 	    private final MorePhysicsPlayerListener playerListener  = new MorePhysicsPlayerListener(this);
 	    private final MorePhysicsVehicleListener VehicleListener = new MorePhysicsVehicleListener(this);
 	    private final MorePhysicsBlockListener BlockListener = new MorePhysicsBlockListener(this);
+	    private final MorePhysicsEntityListener entityListener = new MorePhysicsEntityListener(this);
 		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
+		public List<String> bouncyBlocks = new ArrayList<String>();
 		@SuppressWarnings("unused")
 		private static Yaml yaml = new Yaml(new SafeConstructor());
 		public static PermissionHandler Permissions;
@@ -81,6 +85,8 @@ package com.FriedTaco.taco.MorePhysics;
 		                writer.write("PistonLaunchBlocks=true\r\n\n");
 		                writer.write("#Allow people to be exempt from physics (Requires permissions node)\r\n");
 		                writer.write("AllowExemptions=true\r\n\n");
+		                writer.write("#Blocks that are bouncy, must be separated by spaces. Leave this empty to exempt this feature.\r\n");
+		                writer.write("BouncyBlocks=1 2 12 35 \r\n\n");
 		                writer.write("#The following are the weights of armour.\r\n");
 		                writer.write("#These are values out of 100 and are predefined by default.\r\n");
 		                writer.write("#Tampering with these values may result in players becoming conscious of their weight.\r\n");
@@ -159,6 +165,7 @@ package com.FriedTaco.taco.MorePhysics;
 		          pistons = properties.getBoolean("PistonLaunch", true);
 		          pistonsB = properties.getBoolean("PistonLaunchBlocks", true);
 		          exemptions = properties.getBoolean("AllowExemptions", true);
+		          bouncyBlocks = Arrays.asList(properties.getString("BouncyBlocks","").split(" "));
 		        } catch (Exception e) {
 		            log.log(Level.SEVERE,
 		                    "Exception while reading from MorePhysics.properties", e);
@@ -181,6 +188,7 @@ package com.FriedTaco.taco.MorePhysics;
 	        pm.registerEvent(Event.Type.VEHICLE_DESTROY, VehicleListener, Priority.Normal, this);
 	        pm.registerEvent(Event.Type.VEHICLE_MOVE, VehicleListener, Priority.Normal, this);
 	        pm.registerEvent(Event.Type.BLOCK_PISTON_EXTEND, BlockListener, Priority.Normal, this);
+	        pm.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Normal, this);
 	        PluginDescriptionFile pdfFile = this.getDescription();
 	        System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
 	        setupPermissions();
