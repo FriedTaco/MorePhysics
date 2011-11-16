@@ -48,7 +48,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    				if(event.getDirection().name().equalsIgnoreCase("up"))
 	    				{
 	    					b.get(i).setTypeId(0);
-	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()+.5d,b.get(i).getY()+1,b.get(i).getZ()+.5d,id);
+	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()+.5d,b.get(i).getY()+1,b.get(i).getZ()+.5d,id,0);
 	  	  	    	      	cWorld.addEntity(sand);
 	  	  	    	      	destroyGhostEntity(b.get(i),sand.getBukkitEntity());
 	  	  	    	      	sand.getBukkitEntity().setVelocity(sand.getBukkitEntity().getVelocity().setY(2));
@@ -56,7 +56,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    				else if(event.getDirection().name().equalsIgnoreCase("north"))
 	    				{
 	    					b.get(i).setTypeId(0);
-	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()-.5d,b.get(i).getY()+.5d,b.get(i).getZ()+.5d,id);
+	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()-.5d,b.get(i).getY()+.5d,b.get(i).getZ()+.5d,id,0);
 	    					Vector vel = sand.getBukkitEntity().getVelocity();
 	    					vel.add(new Vector(-1.5,.2,0));
 	  	  	    	      	cWorld.addEntity(sand);
@@ -67,7 +67,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    				else if(event.getDirection().name().equalsIgnoreCase("south"))
 	    				{
 	    					b.get(i).setTypeId(0);
-	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()-.5d,b.get(i).getY()+.5d,b.get(i).getZ()+.5d,id);
+	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()-.5d,b.get(i).getY()+.5d,b.get(i).getZ()+.5d,id,0);
 	    					Vector vel = sand.getBukkitEntity().getVelocity();
 	    					vel.add(new Vector(1.5,.2,0));
 	  	  	    	      	cWorld.addEntity(sand);
@@ -77,7 +77,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    				else if(event.getDirection().name().equalsIgnoreCase("west"))
 	    				{
 	    					b.get(i).setTypeId(0);
-	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()+.5d,b.get(i).getY()+.5d,b.get(i).getZ()-.5d,id);
+	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()+.5d,b.get(i).getY()+.5d,b.get(i).getZ()-.5d,id,0);
 	    					Vector vel = sand.getBukkitEntity().getVelocity();
 	    					vel.add(new Vector(0,.2,1.5));
 	    					cWorld.addEntity(sand);    
@@ -87,7 +87,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    				else if(event.getDirection().name().equalsIgnoreCase("east"))
 	    				{
 	    					b.get(i).setTypeId(0);
-	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()+.5d,b.get(i).getY()+.5d,b.get(i).getZ()-.5d,id);
+	    					EntityFallingSand sand = new EntityFallingSand(cWorld,b.get(i).getX()+.5d,b.get(i).getY()+.5d,b.get(i).getZ()-.5d,id,0);
 	    					Vector vel = sand.getBukkitEntity().getVelocity();
 	    					vel.add(new Vector(0,.2,-1.5));
 	    					cWorld.addEntity(sand);    
@@ -224,7 +224,7 @@ public class MorePhysicsBlockListener extends BlockListener {
 							v.setZ(v.getZ()+4);
 						e.teleport(e.getLocation().add(0, 0, 1));
 					}
-					else if(event.getDirection().name().equalsIgnoreCase("west") && (e.getLocation().getBlock().getRelative(0,0,1).equals(event.getBlock()) || e.getLocation().getBlock().getRelative(0,1,1).equals(event.getBlock())))
+					else if(event.getDirection().name().equalsIgnoreCase("east") && (e.getLocation().getBlock().getRelative(0,0,1).equals(event.getBlock()) || e.getLocation().getBlock().getRelative(0,1,1).equals(event.getBlock())))
 					{
 						if(e instanceof Player)
 							v.setZ(v.getZ()-(4-(plugin.getTotalWeight((Player) e))));
