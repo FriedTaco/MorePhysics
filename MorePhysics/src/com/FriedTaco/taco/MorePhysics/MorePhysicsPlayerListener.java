@@ -2,7 +2,9 @@ package com.FriedTaco.taco.MorePhysics;
 
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -22,28 +24,31 @@ public class MorePhysicsPlayerListener extends PlayerListener
     
     public void onPlayerMove(PlayerMoveEvent event)
     {
-    	if((MorePhysics.Permissions == null && !event.getPlayer().hasPermission("morephysics.exempt")) || (MorePhysics.Permissions != null && MorePhysics.Permissions.has(event.getPlayer(), "morephysics.exempt")))
+    	Player p = event.getPlayer();
+    	if((MorePhysics.Permissions == null && !p.hasPermission("morephysics.exempt")) || (MorePhysics.Permissions != null && MorePhysics.Permissions.has(p, "morephysics.exempt")))
     	{
-	    	Block on = event.getPlayer().getWorld().getBlockAt(event.getTo());
-	    	Block under = event.getPlayer().getWorld().getBlockAt(new Location(event.getPlayer().getWorld(), event.getTo().getBlockX(),event.getTo().getBlockY()-1,event.getTo().getBlockZ()));
-	    	if(on != null && under != null)
+	    	Block in = p.getWorld().getBlockAt(event.getTo().add(0, 1, 0));
+	    	Block under = p.getWorld().getBlockAt(new Location(p.getWorld(), event.getTo().getBlockX(),event.getTo().getBlockY()-1,event.getTo().getBlockZ()));
+	    	if(in != null)
 	    	{
-	    		if((on.getTypeId() == 8 || on.getTypeId() == 9) && (under.getTypeId() == 8 || under.getTypeId() == 9) && plugin.swimming)
+	    		if(in.getType() == Material.WATER && plugin.swimming)
 	    		{
-	    			double modifier = plugin.getTotalWeight(event.getPlayer());
+	    			double modifier = plugin.getTotalWeight(p);
 	    			if(modifier > 0)
 	    			{
+	    				Vector v = p.getVelocity();
 	    				if(event.getTo().getY() > event.getFrom().getY())
-	    					event.getPlayer().setVelocity(new Vector(event.getPlayer().getVelocity().getX(),0-modifier,event.getPlayer().getVelocity().getZ()));
+	    					v.setY(0-modifier);
 	    				else
-	    					event.getPlayer().setVelocity(new Vector(event.getPlayer().getVelocity().getX(),0-(modifier*4),event.getPlayer().getVelocity().getZ()));
+	    					v.setY(0-modifier*4);
+	    				p.setVelocity(v);
 	    			}
 	    			
 	    		}
-	    		else if(on.getTypeId() == 0)
+	    		else if(in.getTypeId() == 0)
 	    		{
 	    			double modifier = 0;
-	    			for(ItemStack i : event.getPlayer().getInventory().getArmorContents())
+	    			for(ItemStack i : p.getInventory().getArmorContents())
 	    			{
 	    				if(i != null)
 	    					modifier += plugin.weight(i.getTypeId());
@@ -51,14 +56,14 @@ public class MorePhysicsPlayerListener extends PlayerListener
 	    			if(modifier > 0)
 	    			{
 	    				//Location loc = event.getTo();
-	    				//double x = event.getPlayer().getVelocity().getX();
-	    				double x = event.getPlayer().getVelocity().getX();
-	    				double z = event.getPlayer().getVelocity().getZ();
+	    				//double x = p.getVelocity().getX();
+	    				double x = p.getVelocity().getX();
+	    				double z = p.getVelocity().getZ();
 	    				double diffX = event.getTo().getX() - event.getFrom().getX();
 	    				double diffZ = event.getTo().getZ() - event.getFrom().getZ();
 	    				double diffY = Math.abs(event.getTo().getY() - event.getFrom().getY());
-	    				Vector v = event.getPlayer().getVelocity();
-	    				if(diffY < .01 && under.getTypeId() != 79 && plugin.movement && !event.getPlayer().isSneaking())
+	    				Vector v = p.getVelocity();
+	    				if(diffY < .01 && under.getTypeId() != 79 && plugin.movement && !p.isSneaking())
 	    				{
 		    				if(Math.abs(diffX) > .06 && Math.abs(diffX) < 1)
 		    				{
@@ -81,8 +86,8 @@ public class MorePhysicsPlayerListener extends PlayerListener
 		    					//loc.setZ(loc.getZ()+(modifier/3));
 		    				}
 		    				if(event.getTo().distance(event.getFrom()) > .1)
-		    					event.getPlayer().setVelocity(v);
-		    				//event.getPlayer().teleport(loc);    				
+		    					p.setVelocity(v);
+		    				//p.teleport(loc);    				
 		    			}
 	    					
 	    			}

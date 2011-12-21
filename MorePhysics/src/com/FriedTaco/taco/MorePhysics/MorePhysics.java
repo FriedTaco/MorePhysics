@@ -21,12 +21,11 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.config.Configuration;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 
 
 
+	@SuppressWarnings("deprecation")
 	public class MorePhysics extends JavaPlugin {
 		public static final Logger log = Logger.getLogger("Minecraft");
 		private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();  
@@ -36,8 +35,6 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 	    private final MorePhysicsEntityListener entityListener = new MorePhysicsEntityListener(this);
 		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
 		public List<String> bouncyBlocks = new ArrayList<String>();
-		@SuppressWarnings("unused")
-		private static Yaml yaml = new Yaml(new SafeConstructor());
 		public static PermissionHandler Permissions;
 		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
