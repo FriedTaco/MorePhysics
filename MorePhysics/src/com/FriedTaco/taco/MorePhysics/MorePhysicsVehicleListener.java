@@ -4,22 +4,23 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Boat;
-import org.bukkit.event.Cancellable;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
-import org.bukkit.event.vehicle.VehicleListener;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.util.Vector;
 
 
-public class MorePhysicsVehicleListener extends VehicleListener implements Cancellable
+public class MorePhysicsVehicleListener implements Listener
 {
 	private final MorePhysics plugin;
 	
     public MorePhysicsVehicleListener(MorePhysics instance) {
         plugin = instance;
     }
-    
+    @EventHandler(priority = EventPriority.HIGH)
     public void onVehicleDamage(VehicleDamageEvent	event)
     {
     	if(plugin.boats && event.getVehicle() instanceof Boat)
@@ -32,13 +33,13 @@ public class MorePhysicsVehicleListener extends VehicleListener implements Cance
 	    	}
     	}
     }
-    
+    @EventHandler(priority = EventPriority.HIGH)
 	public void onVehicleDestroy(VehicleDestroyEvent event) 	
 	{
 		if(event.getVehicle() instanceof Boat && MorePhysics.sinking.contains((Boat) event.getVehicle()))
     		MorePhysics.sinking.remove((Boat) event.getVehicle());		
 	}
-	
+    @EventHandler(priority = EventPriority.HIGH)
 	public void onVehicleMove(VehicleMoveEvent event)
 	{
 		if(plugin.boats)
@@ -56,12 +57,10 @@ public class MorePhysicsVehicleListener extends VehicleListener implements Cance
 			}
 		}
 	}
-	@Override
 	public boolean isCancelled() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	@Override
 	public void setCancelled(boolean arg0) {
 		// TODO Auto-generated method stub
 		

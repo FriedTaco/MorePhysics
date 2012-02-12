@@ -10,11 +10,13 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.util.Vector;
 
-public class MorePhysicsBlockListener extends BlockListener {
+public class MorePhysicsBlockListener implements Listener {
 	private final MorePhysics plugin;
 
     public MorePhysicsBlockListener(final MorePhysics plugin) {
@@ -26,6 +28,7 @@ public class MorePhysicsBlockListener extends BlockListener {
     		if(p.getLocation().distance(block.getLocation()) < 50)
     			((org.bukkit.craftbukkit.entity.CraftPlayer)p).getHandle().netServerHandler.sendPacket(new Packet51MapChunk(block.getX(),block.getY(),block.getZ(), 20, 20, 20, (((CraftWorld) block.getWorld()).getHandle())));
     }
+    @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPistonExtend(BlockPistonExtendEvent event)
     {    	
     	
@@ -33,7 +36,6 @@ public class MorePhysicsBlockListener extends BlockListener {
 	    	//Block block = null;
 	    if(plugin.pistonsB)
 	    {
-	    	
 	    	if(!event.getBlocks().isEmpty())
 	    	{
 	    		List<Block> b = event.getBlocks();

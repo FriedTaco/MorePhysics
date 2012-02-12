@@ -1,11 +1,13 @@
 package com.FriedTaco.taco.MorePhysics;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityListener;
 
-public class MorePhysicsEntityListener extends EntityListener {
+public class MorePhysicsEntityListener implements Listener {
 	
 	private MorePhysics plugin;
 	
@@ -13,6 +15,7 @@ public class MorePhysicsEntityListener extends EntityListener {
 	{
 		plugin=instance;
 	}
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		if(!plugin.bouncyBlocks.isEmpty())

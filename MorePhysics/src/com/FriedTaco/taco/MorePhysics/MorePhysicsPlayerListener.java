@@ -5,14 +5,16 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 
 
-public class MorePhysicsPlayerListener extends PlayerListener 
+public class MorePhysicsPlayerListener implements Listener 
 {
 	final MorePhysics plugin;
 	double min = .001;
@@ -21,7 +23,7 @@ public class MorePhysicsPlayerListener extends PlayerListener
     {
         plugin = instance;
     }
-    
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event)
     {
     	Player p = event.getPlayer();
