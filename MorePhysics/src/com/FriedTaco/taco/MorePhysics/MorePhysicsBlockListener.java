@@ -6,9 +6,11 @@ import java.util.List;
 import net.minecraft.server.EntityFallingBlock;
 import net.minecraft.server.Packet51MapChunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingSand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,6 +43,7 @@ public class MorePhysicsBlockListener implements Listener {
 	    		List<Block> b = event.getBlocks();
 	    		//for(Block block : event.getBlocks())
 	    		//	b.add(block);
+	    		World w = event.getBlock().getWorld();
 	    		for(int i=b.size()-1; i>=0; i--)
 	    		{
 	    			if(b.get(i).getTypeId() == 12 || b.get(i).getTypeId() == 13)
@@ -61,6 +64,7 @@ public class MorePhysicsBlockListener implements Listener {
 	  	  	    	      	Vector vel = sand.getBukkitEntity().getVelocity();
 	  	  	    	      	vel.add(new Vector(0,10,0));
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
+	  	  	    	      	w.spawn(b.get(i).getLocation().add(.5,1.5,.5).toVector().normalize().toLocation(w, 0, 0).multiply(3), FallingSand.class);
 	  	  	    	      	destroyGhostEntity(b.get(i),e);
 	    				}
 	    				
