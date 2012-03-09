@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -18,12 +19,10 @@ import org.bukkit.plugin.PluginManager;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.config.Configuration;
 
 
 
 
-	@SuppressWarnings("deprecation")
 	public class MorePhysics extends JavaPlugin {
 		public static final Logger log = Logger.getLogger("Minecraft");
 		private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();  
@@ -33,9 +32,8 @@ import org.bukkit.util.config.Configuration;
 		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
 		static String mainDirectory = "plugins/MorePhysics";
-		static File config = new File(mainDirectory + File.separator + "config.dat");
 		static Properties properties = new Properties(); 
-		protected static Configuration Config;
+		protected static FileConfiguration Config;
 
 
 		   
@@ -52,66 +50,97 @@ import org.bukkit.util.config.Configuration;
 		      }
 		  }
 		 public void loadConfig(){
-	            Config = getConfiguration();
-	            if(Config == null)
-	            {
-	            	Config.setProperty("Boats_Sink", true);
-	            	Config.setProperty("Movement_Affected", true);
-	            	Config.setProperty("Swimming_Affected", true);
-	            	Config.setProperty("Pistons_Launch_Entities", true);
-	            	Config.setProperty("Pistons_Launch_Blocks", true);
-	            	Config.setProperty("Allow_Physics_Exemptions", true);
-	            	Config.setProperty("Bounce_Causing_Blocks", "1 2 12 35");
-	        	    Config.setProperty("Leather_Helm",2);
-	                Config.setProperty("Leather_Chest",10);
-	                Config.setProperty("Leather_Pants",8);
-	                Config.setProperty("Leather_Boots",2);
-	                Config.setProperty("Iron_Helm",20);
-	                Config.setProperty("Iron_Chest",60);
-	                Config.setProperty("Iron_Pants",40);
-	                Config.setProperty("Iron_Boots",20);
-	                Config.setProperty("Gold_Helm",40);
-	                Config.setProperty("Gold_Chest",80);
-	                Config.setProperty("Gold_Pants",70);
-	                Config.setProperty("Gold_Boots",40);
-	                Config.setProperty("Diamond_Helm",5);
-	                Config.setProperty("Diamond_Chest",30);
-	                Config.setProperty("Diamond_Pants",20);
-	                Config.setProperty("Diamond_Boots",5);
-	                Config.setProperty("Chain_Helm",10);
-	                Config.setProperty("Chain_Chest",50);
-	                Config.setProperty("Chain_Pants",30);
-	                Config.setProperty("Chain_Boots",10);
-	            }
-	            Config.setHeader("#MorePhysics configuration");
-	            boats = Config.getBoolean("Boats_Sink", true);
-	            swimming = Config.getBoolean("Movement_Affected", true);
-	            movement = Config.getBoolean("Swimming_Affected", true);
-	            lhat = Config.getDouble("Leather_Helm",2)/1000;
-	            lshirt = Config.getDouble("Leather_Chest",10)/1000;
-	            lpants = Config.getDouble("Leather_Pants",8)/1000;
-	            lboots = Config.getDouble("Leather_Boots",2)/1000;
-	            ihat = Config.getDouble("Iron_Helm",20)/1000;
-	            ishirt = Config.getDouble("Iron_Chest",60)/1000;
-	            ipants = Config.getDouble("Iron_Pants",40)/1000;
-	            iboots = Config.getDouble("Iron_Boots",20)/1000;
-	          	ghat = Config.getDouble("Gold_Helm",40)/1000;
-	          	gshirt = Config.getDouble("Gold_Chest",80)/1000;
-	          	gpants = Config.getDouble("Gold_Pants",70)/1000;
-	          	gboots = Config.getDouble("Gold_Boots",40)/1000;
-	          	dhat = Config.getDouble("Diamond_Helm",5)/1000;
-	          	dshirt = Config.getDouble("Diamond_Chest",30)/1000;
-	          	dpants = Config.getDouble("Diamond_Pants",20)/1000;
-	          	dboots = Config.getDouble("Diamond_Boots",5)/1000;
-	          	chat = Config.getDouble("Chain_Helm",10)/1000;
-	          	cshirt = Config.getDouble("Chain_Chest",50)/1000;
-	          	cpants = Config.getDouble("Chain_Pants",30)/1000;
-	          	cboots = Config.getDouble("Chain_Boots",10)/1000;
-	          	pistons = Config.getBoolean("Pistons_Launch_Entities", true);
-	          	pistonsB = Config.getBoolean("Pistons_Launch_Blocks", true);
-	          	exemptions = Config.getBoolean("Allow_Physics_Exemptions", true);
-	          	bouncyBlocks = Arrays.asList(Config.getString("Bounce_Causing_Blocks", "").split(" "));
-	            Config.save();
+			 try{
+				File MorePhysics = new File("plugins" + File.separator + "MorePhysics" + File.separator + "config.yml");
+				MorePhysics.mkdir();
+	            Config = getConfig();
+	            if(!Config.contains("general.Boats_Sink"))
+	            	Config.set("general.Boats_Sink", true);
+	            if(!Config.contains("general.Movement_Affected"))
+	            	Config.set("general.Movement_Affected", true);
+	            if(!Config.contains("general.Swimming_Affected"))
+	            	Config.set("general.Swimming_Affected", true);
+	            if(!Config.contains("general.Pistons_Launch_Entities"))
+	            	Config.set("general.Pistons_Launch_Entities", true);
+	            if(!Config.contains("general.Pistons_Launch_Blocks"))
+	            	Config.set("general.Pistons_Launch_Blocks", true);
+	            if(!Config.contains("general.Allow_Physics_Exemptions"))
+	            	Config.set("general.Allow_Physics_Exemptions", true);
+	            if(!Config.contains("general.Bounce_Causing_Blocks"))
+	            	Config.set("general.Bounce_Causing_Blocks", "1 2 12 35");
+	            if(!Config.contains("armour.Leather_Helm"))
+	        	    Config.set("armour.Leather_Helm",2);
+	            if(!Config.contains("armour.Leather_Chest"))
+	                Config.set("armour.Leather_Chest",10);
+	            if(!Config.contains("armour.Leather_Pants"))
+	                Config.set("armour.Leather_Pants",8);
+	            if(!Config.contains("armour.Leather_Boots"))
+	                Config.set("armour.Leather_Boots",2);
+	            if(!Config.contains("armour.Iron_Helm"))
+	                Config.set("armour.Iron_Helm",20);
+	            if(!Config.contains("armour.Iron_Chest"))
+	                Config.set("armour.Iron_Chest",60);
+	            if(!Config.contains("armour.Iron_Pants"))
+	                Config.set("armour.Iron_Pants",40);
+	            if(!Config.contains("armour.Iron_Boots"))
+	                Config.set("armour.Iron_Boots",20);
+	            if(!Config.contains("armour.Gold_Helm"))
+	                Config.set("armour.Gold_Helm",40);
+	            if(!Config.contains("armour.Gold_Chest"))
+	                Config.set("armour.Gold_Chest",80);
+	            if(!Config.contains("armour.Gold_Pants"))
+	                Config.set("armour.Gold_Pants",70);
+	            if(!Config.contains("armour.Gold_Boots"))
+	                Config.set("armour.Gold_Boots",40);
+	            if(!Config.contains("armour.Diamond_Helm"))
+	                Config.set("armour.Diamond_Helm",5);
+	            if(!Config.contains("armour.Diamond_Chest"))
+	                Config.set("armour.Diamond_Chest",30);
+	            if(!Config.contains("armour.Diamond_Pants"))
+	                Config.set("armour.Diamond_Pants",20);
+	            if(!Config.contains("armour.Diamond_Boots"))
+	                Config.set("armour.Diamond_Boots",5);
+	            if(!Config.contains("armour.Chain_Helm"))
+	                Config.set("armour.Chain_Helm",10);
+	            if(!Config.contains("armour.Chain_Chest"))
+	                Config.set("armour.Chain_Chest",50);
+	            if(!Config.contains("armour.Chain_Pants"))
+	                Config.set("armour.Chain_Pants",30);
+	            if(!Config.contains("armour.Chain_Boots"))
+	                Config.set("armour.Chain_Boots",10);
+	            
+	            boats = Config.getBoolean("general.Boats_Sink", true);
+	            swimming = Config.getBoolean("general.Movement_Affected", true);
+	            movement = Config.getBoolean("general.Swimming_Affected", true);
+	            lhat = Config.getDouble("armour.Leather_Helm",2)/1000;
+	            lshirt = Config.getDouble("armour.Leather_Chest",10)/1000;
+	            lpants = Config.getDouble("armour.Leather_Pants",8)/1000;
+	            lboots = Config.getDouble("armour.Leather_Boots",2)/1000;
+	            ihat = Config.getDouble("armour.Iron_Helm",20)/1000;
+	            ishirt = Config.getDouble("armour.Iron_Chest",60)/1000;
+	            ipants = Config.getDouble("armour.Iron_Pants",40)/1000;
+	            iboots = Config.getDouble("armour.Iron_Boots",20)/1000;
+	          	ghat = Config.getDouble("armour.Gold_Helm",40)/1000;
+	          	gshirt = Config.getDouble("armour.Gold_Chest",80)/1000;
+	          	gpants = Config.getDouble("armour.Gold_Pants",70)/1000;
+	          	gboots = Config.getDouble("armour.Gold_Boots",40)/1000;
+	          	dhat = Config.getDouble("armour.Diamond_Helm",5)/1000;
+	          	dshirt = Config.getDouble("armour.Diamond_Chest",30)/1000;
+	          	dpants = Config.getDouble("armour.Diamond_Pants",20)/1000;
+	          	dboots = Config.getDouble("armour.Diamond_Boots",5)/1000;
+	          	chat = Config.getDouble("armour.Chain_Helm",10)/1000;
+	          	cshirt = Config.getDouble("armour.Chain_Chest",50)/1000;
+	          	cpants = Config.getDouble("armour.Chain_Pants",30)/1000;
+	          	cboots = Config.getDouble("armour.Chain_Boots",10)/1000;
+	          	pistons = Config.getBoolean("general.Pistons_Launch_Entities", true);
+	          	pistonsB = Config.getBoolean("general.Pistons_Launch_Blocks", true);
+	          	exemptions = Config.getBoolean("general.Allow_Physics_Exemptions", true);
+	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", "").split(" "));
+	            saveConfig();
+	            System.out.println(swimming+" "+movement);
+			 } catch(Exception e){
+				 
+			 }
 	        }
 
 	    public void onDisable() {

@@ -1,7 +1,6 @@
 name: MorePhysics
 main: com.FriedTaco.taco.MorePhysics.MorePhysics
-version: 1.6
-commands:
+version: 1.7
 permissions:
     morephysics.*:
         description: Gives access to all morephysics commands/features.
