@@ -1,9 +1,13 @@
 package com.FriedTaco.taco.MorePhysics;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -22,7 +26,8 @@ public class MorePhysicsEntityListener implements Listener {
 		{
 			if(event.getCause() == DamageCause.FALL && event.getEntity() instanceof Player)
 			{
-				if(plugin.bouncyBlocks.contains(Integer.toString(event.getEntity().getLocation().getBlock().getRelative(0, -1, 0).getTypeId())))
+				Entity e = event.getEntity();
+				if(plugin.bouncyBlocks.contains(Integer.toString(e.getLocation().getBlock().getRelative(0, -1, 0).getTypeId())))
 				{
 					double damage=0;
 					if(event.getDamage()/10 > 3)
@@ -30,7 +35,33 @@ public class MorePhysicsEntityListener implements Listener {
 					else
 						damage=event.getDamage()/10;
 					event.setCancelled(true);
-					event.getEntity().setVelocity(event.getEntity().getVelocity().setY(event.getEntity().getVelocity().getY()+damage));
+					event.getEntity().setVelocity(e.getVelocity().setY(e.getVelocity().getY()+damage));
+				}
+			}
+		}
+		if(event instanceof EntityDamageByEntityEvent)
+		{
+			if(plugin.arrows)
+			{
+				EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event;
+				if(e.getDamager() instanceof Arrow)
+				{
+				Location dmg = e.getDamager().getLocation();
+				Location ent = e.getEntity().getLocation();
+					if(e.getEntity() instanceof Player)
+					{
+						double diffY = dmg.getY()-ent.getY();
+						double modifier = 1;
+						if(diffY < 2 && diffY > 1.6)
+							modifier = plugin.arhead;
+						else if(diffY < 1.6 && diffY > 1)
+							modifier = plugin.artorso;
+						else if(diffY < 1 && diffY > .4)
+							modifier = plugin.arlegs;
+						else if(diffY < .4 && diffY > 0)
+							modifier = plugin.arfeet;
+						e.setDamage((int) (e.getDamage()*modifier));
+					}
 				}
 			}
 		}

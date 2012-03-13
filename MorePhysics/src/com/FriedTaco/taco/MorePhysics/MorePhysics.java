@@ -29,8 +29,8 @@ import org.bukkit.plugin.Plugin;
 		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
 		public List<String> bouncyBlocks = new ArrayList<String>();
 		public static PermissionHandler Permissions;
-		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true;		
-		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots;
+		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true;		
+		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet;
 		static String mainDirectory = "plugins/MorePhysics";
 		static Properties properties = new Properties(); 
 		protected static FileConfiguration Config;
@@ -108,7 +108,16 @@ import org.bukkit.plugin.Plugin;
 	                Config.set("armour.Chain_Pants",30);
 	            if(!Config.contains("armour.Chain_Boots"))
 	                Config.set("armour.Chain_Boots",10);
-	            
+	            if(!Config.contains("arrows.enabled"))
+	                Config.set("arrows.enabled",true);
+	            if(!Config.contains("arrows.head_modifier"))
+	                Config.set("arrows.head_modifier",3);
+	            if(!Config.contains("arrows.torso_modifier"))
+	                Config.set("arrows.torso_modifier",2);
+	            if(!Config.contains("arrows.legs_modifier"))
+	                Config.set("arrows.legs_modifier",.8);
+	            if(!Config.contains("arrows.feet_modifier"))
+	                Config.set("arrows.feet_modifier",.2);
 	            boats = Config.getBoolean("general.Boats_Sink", true);
 	            swimming = Config.getBoolean("general.Movement_Affected", true);
 	            movement = Config.getBoolean("general.Swimming_Affected", true);
@@ -132,9 +141,14 @@ import org.bukkit.plugin.Plugin;
 	          	cshirt = Config.getDouble("armour.Chain_Chest",50)/1000;
 	          	cpants = Config.getDouble("armour.Chain_Pants",30)/1000;
 	          	cboots = Config.getDouble("armour.Chain_Boots",10)/1000;
+	          	arhead = Config.getDouble("arrows.head_modifier",3);
+	          	artorso = Config.getDouble("arrows.torso_modifier",2);
+	          	arlegs = Config.getDouble("arrows.legs_modifier",.8);
+	          	arfeet = Config.getDouble("arrows.feet_modifier",.2);
 	          	pistons = Config.getBoolean("general.Pistons_Launch_Entities", true);
 	          	pistonsB = Config.getBoolean("general.Pistons_Launch_Blocks", true);
 	          	exemptions = Config.getBoolean("general.Allow_Physics_Exemptions", true);
+	          	arrows = Config.getBoolean("arrows.enabled", true);
 	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", "").split(" "));
 	            saveConfig();
 	            System.out.println(swimming+" "+movement);

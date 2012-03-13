@@ -10,7 +10,6 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingSand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,17 +17,26 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.util.Vector;
 
+@SuppressWarnings("unused")
 public class MorePhysicsBlockListener implements Listener {
 	private final MorePhysics plugin;
 
     public MorePhysicsBlockListener(final MorePhysics plugin) {
         this.plugin = plugin;
     }
+    /* Depreciated
     public void destroyGhostEntity(Block block, Entity entity)
     {
     	for(Player p : block.getWorld().getPlayers())
     		if(p.getLocation().distance(block.getLocation()) < 50)
     			((org.bukkit.craftbukkit.entity.CraftPlayer)p).getHandle().netServerHandler.sendPacket(new Packet51MapChunk(block.getX(),block.getY(),block.getZ(), 20, 20, 20, (((CraftWorld) block.getWorld()).getHandle())));
+    }
+    */
+    public void destroyGhostEntity(Block block, Entity entity)
+    {
+    	for(Player p : block.getWorld().getPlayers())
+    		if(p.getLocation().distance(block.getLocation()) < 50)
+    			p.sendBlockChange(block.getLocation(), 0, (byte) 0);
     }
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPistonExtend(BlockPistonExtendEvent event)
@@ -41,30 +49,23 @@ public class MorePhysicsBlockListener implements Listener {
 	    	if(!event.getBlocks().isEmpty())
 	    	{
 	    		List<Block> b = event.getBlocks();
-	    		//for(Block block : event.getBlocks())
-	    		//	b.add(block);
 	    		World w = event.getBlock().getWorld();
 	    		for(int i=b.size()-1; i>=0; i--)
 	    		{
 	    			if(b.get(i).getTypeId() == 12 || b.get(i).getTypeId() == 13)
 	    			{
-	    			net.minecraft.server.World cWorld = ((CraftWorld)event.getBlock().getWorld()).getHandle();
+	    			net.minecraft.server.World cWorld = ((CraftWorld)w).getHandle();
 	  	    	      int id = b.get(i).getTypeId();
 	    				if(event.getDirection().name().equalsIgnoreCase("up"))
 	    				{
-	    					/*
-	    					b.get(i).setTypeId(0);
-	    					FallingSand s = event.getBlock().getWorld().spawn(new Location(event.getBlock().getWorld(), b.get(i).getX()+.5d,b.get(i).getY()+1,b.get(i).getZ()+.5d), FallingSand.class);
-	    					s.setVelocity(s.getVelocity().setY(2));
-	    					*/
 	    					EntityFallingBlock sand = new EntityFallingBlock(cWorld,b.get(i).getX(),b.get(i).getY(),b.get(i).getZ(),id,b.get(i).getData());
 	    					Entity e = sand.getBukkitEntity();
 	    					e.teleport(e.getLocation().add(.5,1.5,.5));
-	  	  	    	      	//cWorld.addEntity(sand);
+	  	  	    	      	cWorld.addEntity(sand);
 	  	  	    	      	Vector vel = sand.getBukkitEntity().getVelocity();
 	  	  	    	      	vel.add(new Vector(0,10,0));
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
-	  	  	    	      	w.spawn(b.get(i).getLocation().add(.5,1.5,.5).toVector().normalize().toLocation(w, 0, 0).multiply(3), FallingSand.class);
+	  	  	    	      	//w.spawn(b.get(i).getLocation().add(.5,1.5,.5).toVector().normalize().toLocation(w, 0, 0).multiply(3), FallingSand.class);
 	  	  	    	      	destroyGhostEntity(b.get(i),e);
 	    				}
 	    				
@@ -109,87 +110,6 @@ public class MorePhysicsBlockListener implements Listener {
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
 	  	  	    	      	destroyGhostEntity(b.get(i),sand.getBukkitEntity());	    	
 	    				}
-	    				
-	    					/*
-	    					for(int x=1; x<16; x++)
-	    					{
-	    						if(b.get(i).getRelative(0,1,0).getTypeId() == 0)
-	    						{
-	    							b.get(i).getRelative(0,1,0).setTypeId(b.get(i).getTypeId());
-	    							b.get(i).setTypeId(0);
-	    							b.set(i,b.get(i).getRelative(0,1,0));
-	    						}
-	    						else
-	    						{
-	    							break;
-	    						}
-	    					}
-	    				}
-	    				else if(event.getDirection().name().equalsIgnoreCase("north"))
-	    				{
-	    					for(int x=1; x<8; x++)
-	    					{
-	    						if(b.get(i).getRelative(-1,0,0).getTypeId() == 0)
-	    						{
-	    							b.get(i).getRelative(-1,0,0).setTypeId(b.get(i).getTypeId());
-	    							b.get(i).setTypeId(0);
-	    							b.set(i,b.get(i).getRelative(-1,0,0));
-	    						}
-	    						else
-	    						{
-	    							break;
-	    						}
-	    					}
-	    				}
-	    				else if(event.getDirection().name().equalsIgnoreCase("south"))
-	    				{
-	    					for(int x=1; x<8; x++)
-	    					{
-	    						if(b.get(i).getRelative(1,0,0).getTypeId() == 0)
-	    						{
-	    							b.get(i).getRelative(1,0,0).setTypeId(b.get(i).getTypeId());
-	    							b.get(i).setTypeId(0);
-	    							b.set(i,b.get(i).getRelative(1,0,0));
-	    						}
-	    						else
-	    						{
-	    							break;
-	    						}
-	    					}
-	    				}
-	    				else if(event.getDirection().name().equalsIgnoreCase("west"))
-	    				{
-	    					for(int x=1; x<8; x++)
-	    					{
-	    						if(b.get(i).getRelative(0,0,1).getTypeId() == 0)
-	    						{
-	    							b.get(i).getRelative(0,0,1).setTypeId(b.get(i).getTypeId());
-	    							b.get(i).setTypeId(0);
-	    							b.set(i,b.get(i).getRelative(0,0,1));
-	    						}
-	    						else
-	    						{
-	    							break;
-	    						}
-	    					}
-	    				}
-	    				else if(event.getDirection().name().equalsIgnoreCase("east"))
-	    				{
-	    					for(int x=1; x<8; x++)
-	    					{
-	    						if(b.get(i).getRelative(0,0,-1).getTypeId() == 0)
-	    						{
-	    							b.get(i).getRelative(0,0,-1).setTypeId(b.get(i).getTypeId());
-	    							b.get(i).setTypeId(0);
-	    							b.set(i,b.get(i).getRelative(0,0,-1));
-	    						}
-	    						else
-	    						{
-	    							break;
-	    						}
-	    					}
-	    				}
-	    				*/
 	    			}
 	    			else
 	    			{

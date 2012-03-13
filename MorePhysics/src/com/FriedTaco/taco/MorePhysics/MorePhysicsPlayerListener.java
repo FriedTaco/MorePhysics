@@ -83,8 +83,6 @@ public class MorePhysicsPlayerListener implements Listener
 		    					v.setX(z+(modifier/8));
 		    					//loc.setZ(loc.getZ()+(modifier/3));
 		    				}
-		    				
-		    				System.out.println(to.distance(from));
 		    				if(!v.equals(p.getVelocity()))
 		    					p.setVelocity(v);
 		    				//p.teleport(loc);    				
