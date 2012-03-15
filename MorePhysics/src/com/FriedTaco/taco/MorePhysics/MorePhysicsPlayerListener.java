@@ -1,13 +1,14 @@
 package com.FriedTaco.taco.MorePhysics;
 
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 
@@ -27,15 +28,13 @@ public class MorePhysicsPlayerListener implements Listener
     	Player p = event.getPlayer();
     	if(!p.hasPermission("morephysics.exempt"))
     	{
-    		Location to = event.getTo();
-			Location from = event.getFrom();
-	    	Block in = p.getWorld().getBlockAt(event.getTo()).getRelative(0, 1, 0);
-	    	Block under = p.getWorld().getBlockAt(event.getTo()).getRelative(0,-1,0);
+    		
+    		Block in = p.getWorld().getBlockAt(event.getTo()).getRelative(0, 1, 0);
 	    	if(in != null)
 	    	{
+	    		double modifier = plugin.getTotalWeight(p);
 	    		if((in.getTypeId() == 9 || in.getTypeId() == 8) && plugin.swimming)
 	    		{
-	    			double modifier = plugin.getTotalWeight(p);
 	    			if(modifier > 0)
 	    			{
 	    				Vector v = p.getVelocity();
@@ -47,7 +46,22 @@ public class MorePhysicsPlayerListener implements Listener
 	    			}
 	    			
 	    		}
-	    		else if(in.getTypeId() == 0)
+	    		else 
+	    		{
+	    			int intensity = (int) (modifier*30);
+	    			if(intensity > 0)
+	    			{
+	    				if(intensity>5)
+	    					intensity=5;
+	    				PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, 20, intensity);
+	    	    		p.addPotionEffect(effect, true);
+	    			}
+	    		}
+	    		/*Depreciated
+	    		Location to = event.getTo();
+				Location from = event.getFrom();
+	    		Block under = p.getWorld().getBlockAt(event.getTo()).getRelative(0,-1,0);
+	   			if(in.getTypeId() == 0)
 	    		{
 	    			double modifier = plugin.getTotalWeight(p);
 	    			if(modifier > 0)
@@ -90,6 +104,7 @@ public class MorePhysicsPlayerListener implements Listener
 	    					
 	    			}
 	    		}
+	    		*/
 	    	}
     	}
     }

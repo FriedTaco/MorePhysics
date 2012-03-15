@@ -50,15 +50,16 @@ public class MorePhysicsEntityListener implements Listener {
 				Location ent = e.getEntity().getLocation();
 					if(e.getEntity() instanceof Player)
 					{
+						
 						double diffY = dmg.getY()-ent.getY();
 						double modifier = 1;
-						if(diffY < 2 && diffY > 1.6)
+						if(diffY < 2 && diffY > 1.55)
 							modifier = plugin.arhead;
-						else if(diffY < 1.6 && diffY > 1)
+						else if(diffY < 1.55 && diffY > .8)
 							modifier = plugin.artorso;
-						else if(diffY < 1 && diffY > .4)
+						else if(diffY < .8 && diffY > .45)
 							modifier = plugin.arlegs;
-						else if(diffY < .4 && diffY > 0)
+						else if(diffY < .45 && diffY > 0)
 							modifier = plugin.arfeet;
 						e.setDamage((int) (e.getDamage()*modifier));
 					}

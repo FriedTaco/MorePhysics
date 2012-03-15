@@ -151,7 +151,6 @@ import org.bukkit.plugin.Plugin;
 	          	arrows = Config.getBoolean("arrows.enabled", true);
 	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", "").split(" "));
 	            saveConfig();
-	            System.out.println(swimming+" "+movement);
 			 } catch(Exception e){
 				 
 			 }
