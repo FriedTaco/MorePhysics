@@ -30,7 +30,7 @@ import org.bukkit.plugin.Plugin;
 		public List<String> bouncyBlocks = new ArrayList<String>();
 		public static PermissionHandler Permissions;
 		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true;		
-		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet;
+		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet,pistonStrength;
 		static String mainDirectory = "plugins/MorePhysics";
 		static Properties properties = new Properties(); 
 		protected static FileConfiguration Config;
@@ -60,10 +60,12 @@ import org.bukkit.plugin.Plugin;
 	            	Config.set("general.Movement_Affected", true);
 	            if(!Config.contains("general.Swimming_Affected"))
 	            	Config.set("general.Swimming_Affected", true);
-	            if(!Config.contains("general.Pistons_Launch_Entities"))
-	            	Config.set("general.Pistons_Launch_Entities", true);
-	            if(!Config.contains("general.Pistons_Launch_Blocks"))
-	            	Config.set("general.Pistons_Launch_Blocks", true);
+	            if(!Config.contains("pistons.Pistons_Launch_Entities"))
+	            	Config.set("pistons.Pistons_Launch_Entities", true);
+	            if(!Config.contains("pistons.Pistons_Launch_Blocks"))
+	            	Config.set("pistons.Pistons_Launch_Blocks", true);
+	            if(!Config.contains("pistons.Piston_Strength"))
+	            	Config.set("pistons.Piston_Strength", 4.0);
 	            if(!Config.contains("general.Allow_Physics_Exemptions"))
 	            	Config.set("general.Allow_Physics_Exemptions", true);
 	            if(!Config.contains("general.Bounce_Causing_Blocks"))
@@ -145,8 +147,9 @@ import org.bukkit.plugin.Plugin;
 	          	artorso = Config.getDouble("arrows.torso_modifier",2);
 	          	arlegs = Config.getDouble("arrows.legs_modifier",.8);
 	          	arfeet = Config.getDouble("arrows.feet_modifier",.2);
-	          	pistons = Config.getBoolean("general.Pistons_Launch_Entities", true);
-	          	pistonsB = Config.getBoolean("general.Pistons_Launch_Blocks", true);
+	          	pistons = Config.getBoolean("pistons.Pistons_Launch_Entities", true);
+	          	pistonsB = Config.getBoolean("pistons.Pistons_Launch_Blocks", true);
+	          	pistonStrength = Config.getDouble("pistons.Piston_Strength", 4.0);
 	          	exemptions = Config.getBoolean("general.Allow_Physics_Exemptions", true);
 	          	arrows = Config.getBoolean("arrows.enabled", true);
 	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", "").split(" "));

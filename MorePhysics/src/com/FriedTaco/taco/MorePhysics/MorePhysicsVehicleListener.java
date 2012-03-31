@@ -1,6 +1,5 @@
 package com.FriedTaco.taco.MorePhysics;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Boat;
@@ -29,7 +28,7 @@ public class MorePhysicsVehicleListener implements Listener
 	    	if(!MorePhysics.sinking.contains(b) && !b.isDead() && (event.getDamage() >= 2))
 	    	{
 	    		MorePhysics.sinking.add(b);
-	    		b.setVelocity(b.getVelocity().subtract(new Vector(0,.2,0)));
+	    		b.setVelocity(b.getVelocity().subtract(new Vector(0,.05,0)));
 	    	}
     	}
     }
@@ -47,8 +46,9 @@ public class MorePhysicsVehicleListener implements Listener
 			if(event.getVehicle() instanceof Boat && MorePhysics.sinking.contains((Boat) event.getVehicle()))
 			{
 				Block on = event.getVehicle().getWorld().getBlockAt(event.getTo());
-				Block under = event.getVehicle().getWorld().getBlockAt(new Location(event.getVehicle().getWorld(), event.getTo().getBlockX(), event.getTo().getBlockY()-1,event.getTo().getBlockZ()));
-				if(on.getType() == Material.WATER || under.getType() == Material.WATER)
+				Block under = on.getRelative(0, -1, 0);
+				Material underType = under.getType();
+				if(underType == Material.WATER || underType == Material.STATIONARY_WATER)
 				{
 					Vector v  = event.getVehicle().getVelocity();
 					v.subtract(new Vector(0,.05,0));
@@ -58,11 +58,9 @@ public class MorePhysicsVehicleListener implements Listener
 		}
 	}
 	public boolean isCancelled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	public void setCancelled(boolean arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	

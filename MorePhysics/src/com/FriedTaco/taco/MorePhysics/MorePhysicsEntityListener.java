@@ -35,7 +35,7 @@ public class MorePhysicsEntityListener implements Listener {
 					else
 						damage=event.getDamage()/10;
 					event.setCancelled(true);
-					event.getEntity().setVelocity(e.getVelocity().setY(e.getVelocity().getY()+damage));
+					e.setVelocity(e.getVelocity().setY(e.getVelocity().getY()+damage));
 				}
 			}
 		}

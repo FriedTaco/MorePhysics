@@ -28,23 +28,24 @@ public class MorePhysicsPlayerListener implements Listener
     	Player p = event.getPlayer();
     	if(!p.hasPermission("morephysics.exempt"))
     	{
-    		
     		Block in = p.getWorld().getBlockAt(event.getTo()).getRelative(0, 1, 0);
 	    	if(in != null)
 	    	{
 	    		double modifier = plugin.getTotalWeight(p);
-	    		if((in.getTypeId() == 9 || in.getTypeId() == 8) && plugin.swimming)
+	    		if((in.getTypeId() == 9 || in.getTypeId() == 8))
 	    		{
-	    			if(modifier > 0)
+	    			if(plugin.swimming)
 	    			{
-	    				Vector v = p.getVelocity();
-	    				if(event.getTo().getY() > event.getFrom().getY())
-	    					v.setY(0-modifier);
-	    				else
-	    					v.setY(0-modifier*4);
-	    				p.setVelocity(v);
+		    			if(modifier > 0)
+		    			{
+		    				Vector v = p.getVelocity();
+		    				if(event.getTo().getY() > event.getFrom().getY())
+		    					v.setY(0-modifier);
+		    				else
+		    					v.setY(0-modifier*4);
+		    				p.setVelocity(v);
+		    			}
 	    			}
-	    			
 	    		}
 	    		else 
 	    		{
@@ -53,7 +54,7 @@ public class MorePhysicsPlayerListener implements Listener
 	    			{
 	    				if(intensity>5)
 	    					intensity=5;
-	    				PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, 20, intensity);
+	    				PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, 40, intensity);
 	    	    		p.addPotionEffect(effect, true);
 	    			}
 	    		}
