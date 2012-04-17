@@ -5,14 +5,18 @@ import java.util.List;
 
 import net.minecraft.server.EntityFallingBlock;
 import net.minecraft.server.Packet51MapChunk;
+import net.minecraft.server.WorldServer;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftFallingSand;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingSand;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -34,18 +38,25 @@ public class MorePhysicsBlockListener implements Listener {
     			((org.bukkit.craftbukkit.entity.CraftPlayer)p).getHandle().netServerHandler.sendPacket(new Packet51MapChunk(block.getX(),block.getY(),block.getZ(), 20, 20, 20, (((CraftWorld) block.getWorld()).getHandle())));
     }
     */
-    public void destroyGhostEntity(Block block, Entity entity)
+    public void destroyGhostEntity(Block block, Entity entity, Vector add)
     {
+    	Location bLoc = block.getLocation();
+    	Location adj = bLoc.add(add);
     	for(Player p : block.getWorld().getPlayers())
+    	{
     		if(p.getLocation().distance(block.getLocation()) < 50)
-    			p.sendBlockChange(block.getLocation(), 0, (byte) 0);
+    		{
+    			p.sendBlockChange(bLoc, 0, (byte) 0);
+    			p.sendBlockChange(adj, 0, (byte) 0);
+    		}
+    	}
     }
+    
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPistonExtend(BlockPistonExtendEvent event)
     {    	
-    	
-	    	Vector v = null;
-	    	//Block block = null;
+	    Vector v = null;
+	    //Block block = null;
 	    if(plugin.pistonsB)
 	    {
 	    	if(!event.getBlocks().isEmpty())
@@ -55,22 +66,28 @@ public class MorePhysicsBlockListener implements Listener {
 	    		for(int i=b.size()-1; i>=0; i--)
 	    		{
 	    			Block block = b.get(i);
+	    			
 	    			if(block.getTypeId() == 12 || block.getTypeId() == 13)
 	    			{
+	    			/*
 	    			net.minecraft.server.World cWorld = ((CraftWorld)w).getHandle();
 	  	    	      int id = block.getTypeId();
 	    				if(event.getDirection().name().equalsIgnoreCase("up"))
 	    				{
-	    					EntityFallingBlock sand = new EntityFallingBlock(cWorld,block.getX(),block.getY(),block.getZ(),id,block.getData());
+	    					EntityFallingBlock sand = new EntityFallingBlock(cWorld,block.getX(),block.getY()+2,block.getZ(),id,block.getData());
+	    					CraftFallingSand c = new CraftFallingSand(cWorld.getServer(), sand);
+	    					System.out.println("ID: "+id+" Data: "+block.getData());
+	    					((WorldServer) cWorld).tracker.track(sand);
+	    					System.out.println("Block Y: "+block.getY()+" Sand Y: "+sand.locY);
 	    					cWorld.addEntity(sand);
 	    					Entity e = sand.getBukkitEntity();
-	    					e.setTicksLived(20);
-	    					e.teleport(e.getLocation().add(.5,1.5,.5));
+	    					//e.teleport(e.getLocation().add(.5,1.5,.5));
+	    					//w.spawnCreature(e.getLocation().add(.5,4.5,.5), EntityType.FALLING_BLOCK);
 	  	  	    	      	Vector vel = e.getVelocity();
-	  	  	    	      	vel.add(new Vector(0,10,0));
-	  	  	    	      	e.setVelocity(vel);
-	  	  	    	      	e.teleport(e.getLocation().getBlock().getRelative(0,10,0).getLocation());
-	  	  	    	      	destroyGhostEntity(block,e);
+	  	  	    	      	vel.add(new Vector(0,2,0));
+	  	  	    	      	c.setVelocity(vel);
+	  	  	    	      	//e.setVelocity(vel);
+	  	  	    	      	destroyGhostEntity(block,e,new Vector(0,1,0));
 	    				}
 	    				
 	    				else if(event.getDirection().name().equalsIgnoreCase("north"))
@@ -81,7 +98,7 @@ public class MorePhysicsBlockListener implements Listener {
 	    					vel.add(new Vector(-1.5,.2,0));
 	  	  	    	      	cWorld.addEntity(sand);
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
-	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity());
+	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity(),new Vector(-1,0,0));
 	  	  	    	      	
 	    				}
 	    				else if(event.getDirection().name().equalsIgnoreCase("south"))
@@ -92,7 +109,7 @@ public class MorePhysicsBlockListener implements Listener {
 	    					vel.add(new Vector(1.5,.2,0));
 	  	  	    	      	cWorld.addEntity(sand);
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
-	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity());	
+	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity(),new Vector(1,0,0));	
 	    				}
 	    				else if(event.getDirection().name().equalsIgnoreCase("west"))
 	    				{
@@ -102,7 +119,7 @@ public class MorePhysicsBlockListener implements Listener {
 	    					vel.add(new Vector(0,.2,1.5));
 	    					cWorld.addEntity(sand);    
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
-	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity());	
+	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity(),new Vector(0,0,1));	
 	    				}
 	    				else if(event.getDirection().name().equalsIgnoreCase("east"))
 	    				{
@@ -112,7 +129,7 @@ public class MorePhysicsBlockListener implements Listener {
 	    					vel.add(new Vector(0,.2,-1.5));
 	    					cWorld.addEntity(sand);    
 	  	  	    	      	sand.getBukkitEntity().setVelocity(vel);
-	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity());	    	
+	  	  	    	      	destroyGhostEntity(block,sand.getBukkitEntity(),new Vector(0,0,-1));	    	
 	    				}
 	    			}
 	    			else
@@ -120,7 +137,8 @@ public class MorePhysicsBlockListener implements Listener {
 	    				break;
 	    			}
 	    		}	
-	    		/* Old code, for use if sand won't work.
+	    		*/
+	    		// Old code, for use if sand won't work. CURRENTLY IN USE.
 				if(event.getDirection().name().equalsIgnoreCase("up"))
           		{
                 	for(int x=1; x<16; x++)
@@ -128,8 +146,13 @@ public class MorePhysicsBlockListener implements Listener {
                 		if(block.getRelative(0,1,0).getTypeId() == 0)
                  		{
                  			block.getRelative(0,1,0).setTypeId(block.getTypeId());
-                			block.setTypeId(0);
-                 			b.set(i,block.getRelative(0,1,0));
+                 			block.setTypeId(0);
+                 			block = block.getRelative(0,1,0);
+                 			if(i==0 && x==1)
+                 			{
+                 				block.getRelative(0,-1,0).setTypeId(0);
+                 			}
+                 			//b.set(i,block.getRelative(0,1,0));
                  		}
           				else
          				{
@@ -145,7 +168,12 @@ public class MorePhysicsBlockListener implements Listener {
                  		{
                  			block.getRelative(-1,0,0).setTypeId(block.getTypeId());
                 			block.setTypeId(0);
-                 			b.set(i,block.getRelative(-1,0,0));
+                			block = block.getRelative(-1,0,0);
+                 			if(i==0 && x==1)
+                 			{
+                 				block.getRelative(1,0,0).setTypeId(0);
+                 			}
+                 			//b.set(i,block.getRelative(-1,0,0));
                  		}
           				else
          				{
@@ -161,7 +189,12 @@ public class MorePhysicsBlockListener implements Listener {
                  		{
                  			block.getRelative(1,0,0).setTypeId(block.getTypeId());
                 			block.setTypeId(0);
-                 			b.set(i,block.getRelative(1,0,0));
+                			block = block.getRelative(1,0,0);
+                 			if(i==0 && x==1)
+                 			{
+                 				block.getRelative(-1,0,0).setTypeId(0);
+                 			}
+                 			//b.set(i,block.getRelative(1,0,0));
                  		}
           				else
          				{
@@ -177,7 +210,12 @@ public class MorePhysicsBlockListener implements Listener {
                  		{
                  			block.getRelative(0,0,1).setTypeId(block.getTypeId());
                 			block.setTypeId(0);
-                 			b.set(i,block.getRelative(0,0,1));
+                			block = block.getRelative(0,0,1);
+                 			if(i==0 && x==1)
+                 			{
+                 				block.getRelative(0,0,-1).setTypeId(0);
+                 			}
+                 			//b.set(i,block.getRelative(0,0,1));
                  		}
           				else
          				{
@@ -193,17 +231,62 @@ public class MorePhysicsBlockListener implements Listener {
                  		{
                  			block.getRelative(0,0,-1).setTypeId(block.getTypeId());
                 			block.setTypeId(0);
-                 			b.set(i,block.getRelative(0,0,-1));
+                			block = block.getRelative(0,0,-1);
+                 			if(i==0 && x==1)
+                 			{
+                 				block.getRelative(0,0,1).setTypeId(0);
+                 			}
+                 			//b.set(i,block.getRelative(0,0,-1));
                  		}
           				else
          				{
              				break;
                 		}
           			}	
-           		}
-       */ 
-	     	}
-    	}	
+           		  }
+	    		 }
+	    			else
+	    			{
+	    				if(plugin.pistonsC)
+	    				{
+		    				for(Entity e : event.getBlock().getChunk().getEntities())
+		    				{
+		    					if(e.getLocation().distance(event.getBlock().getLocation()) < 2.2)
+		    					{
+		    						v = e.getVelocity();
+		    						Block ent = e.getLocation().getBlock();
+		    						if(event.getDirection().name().equalsIgnoreCase("up") && (ent.getRelative(0,-1,0).equals(block)))
+		    						{
+		    							if(e instanceof Player)
+		    								v.setY(v.getY()+(plugin.pistonStrength/2-(plugin.getTotalWeight((Player) e)*3)));
+		    							else
+		    								v.setY(v.getY()+plugin.pistonStrength/2);
+		    							e.teleport(e.getLocation().add(0, 1, 0));	
+		    						}
+				    				else if(event.getDirection().name().equalsIgnoreCase("north"))
+				              		{
+				    					
+				              		}
+				    				else if(event.getDirection().name().equalsIgnoreCase("south"))
+				              		{
+				    					
+				              		}
+				    				else if(event.getDirection().name().equalsIgnoreCase("east"))
+				              		{
+				    					
+				              		}
+				    				else if(event.getDirection().name().equalsIgnoreCase("west"))
+				              		{
+				    					
+				              		}
+		    					}
+		    				}
+		    			}
+	    			}
+	    		}
+	    	}
+	    }
+	    //
 	    if(plugin.pistons)
 	    {			
 			for(Entity e : event.getBlock().getChunk().getEntities())
@@ -215,7 +298,6 @@ public class MorePhysicsBlockListener implements Listener {
 					Block piston = event.getBlock();
 					if(event.getDirection().name().equalsIgnoreCase("up") && (block.getRelative(0,-1,0).equals(piston)))
 					{
-						System.out.println(e.getType());
 						if(e instanceof Player)
 							v.setY(v.getY()+(plugin.pistonStrength/2-(plugin.getTotalWeight((Player) e)*3)));
 						else

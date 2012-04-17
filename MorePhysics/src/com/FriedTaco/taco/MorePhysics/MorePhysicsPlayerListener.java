@@ -49,13 +49,16 @@ public class MorePhysicsPlayerListener implements Listener
 	    		}
 	    		else 
 	    		{
-	    			int intensity = (int) (modifier*30);
-	    			if(intensity > 0)
+	    			if(plugin.movement)
 	    			{
-	    				if(intensity>5)
-	    					intensity=5;
-	    				PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, 40, intensity);
-	    	    		p.addPotionEffect(effect, true);
+		    			int intensity = (int) (modifier*30);
+		    			if(intensity > 0)
+		    			{
+		    				if(intensity>5)
+		    					intensity=5;
+		    				PotionEffect effect = new PotionEffect(PotionEffectType.SLOW, 40, intensity);
+		    	    		p.addPotionEffect(effect, true);
+		    			}
 	    			}
 	    		}
 	    		/*Depreciated

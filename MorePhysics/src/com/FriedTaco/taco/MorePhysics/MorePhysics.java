@@ -29,7 +29,7 @@ import org.bukkit.plugin.Plugin;
 		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
 		public List<String> bouncyBlocks = new ArrayList<String>();
 		public static PermissionHandler Permissions;
-		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true;		
+		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true,pistonsC=true;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet,pistonStrength;
 		static String mainDirectory = "plugins/MorePhysics";
 		static Properties properties = new Properties(); 
@@ -66,6 +66,8 @@ import org.bukkit.plugin.Plugin;
 	            	Config.set("pistons.Pistons_Launch_Blocks", true);
 	            if(!Config.contains("pistons.Piston_Strength"))
 	            	Config.set("pistons.Piston_Strength", 4.0);
+	            if(!Config.contains("pistons.Pushed_Blocks_Launch_Entities"))
+	            	Config.set("pistons.Pushed_Blocks_Launch_Entities", true);
 	            if(!Config.contains("general.Allow_Physics_Exemptions"))
 	            	Config.set("general.Allow_Physics_Exemptions", true);
 	            if(!Config.contains("general.Bounce_Causing_Blocks"))
@@ -121,8 +123,8 @@ import org.bukkit.plugin.Plugin;
 	            if(!Config.contains("arrows.feet_modifier"))
 	                Config.set("arrows.feet_modifier",.2);
 	            boats = Config.getBoolean("general.Boats_Sink", true);
-	            swimming = Config.getBoolean("general.Movement_Affected", true);
-	            movement = Config.getBoolean("general.Swimming_Affected", true);
+	            swimming = Config.getBoolean("general.Swimming_Affected", true);
+	            movement = Config.getBoolean("general.Movement_Affected", true);
 	            lhat = Config.getDouble("armour.Leather_Helm",2)/1000;
 	            lshirt = Config.getDouble("armour.Leather_Chest",10)/1000;
 	            lpants = Config.getDouble("armour.Leather_Pants",8)/1000;
@@ -149,6 +151,7 @@ import org.bukkit.plugin.Plugin;
 	          	arfeet = Config.getDouble("arrows.feet_modifier",.2);
 	          	pistons = Config.getBoolean("pistons.Pistons_Launch_Entities", true);
 	          	pistonsB = Config.getBoolean("pistons.Pistons_Launch_Blocks", true);
+	          	pistonsC = Config.getBoolean("pistons.Pushed_Blocks_Launch_Entities", true);
 	          	pistonStrength = Config.getDouble("pistons.Piston_Strength", 4.0);
 	          	exemptions = Config.getBoolean("general.Allow_Physics_Exemptions", true);
 	          	arrows = Config.getBoolean("arrows.enabled", true);
