@@ -6,7 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -22,6 +26,41 @@ public class MorePhysicsPlayerListener implements Listener
     {
         plugin = instance;
     }
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event)
+    {
+    	Player p = event.getEntity();
+    	if(plugin.hitPlayers.contains(p.getName()))
+    	{
+    		event.setDeathMessage(plugin.minecartDeathMessage.replaceAll("PLAYER", p.getName()));
+    		plugin.hitPlayers.remove(p.getName());
+    	}
+    }
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event)
+    {
+    	Player p = event.getPlayer();
+    	if(p.hasPermission("morephysics.exempt"))
+    		plugin.weights.put(p.getName(), 0.0);
+    	else
+    		plugin.weights.put(p.getName(), plugin.getTotalWeight(p));
+    }
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event)
+    {
+    	Player p = (Player) event.getPlayer();
+    	if(p.hasPermission("morephysics.exempt"))
+    		plugin.weights.put(p.getName(), 0.0);
+    	else
+    		plugin.weights.put(p.getName(), plugin.getTotalWeight(p));
+    }
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event)
+    {
+    	Player p = event.getPlayer();
+    	if(plugin.weights.containsKey(p.getName()))
+    		plugin.weights.remove(p.getName());
+    }
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent event)
     {
@@ -31,7 +70,7 @@ public class MorePhysicsPlayerListener implements Listener
     		Block in = p.getWorld().getBlockAt(event.getTo()).getRelative(0, 1, 0);
 	    	if(in != null)
 	    	{
-	    		double modifier = plugin.getTotalWeight(p);
+	    		double modifier = plugin.weights.get(p.getName());
 	    		if((in.getTypeId() == 9 || in.getTypeId() == 8))
 	    		{
 	    			if(plugin.swimming)

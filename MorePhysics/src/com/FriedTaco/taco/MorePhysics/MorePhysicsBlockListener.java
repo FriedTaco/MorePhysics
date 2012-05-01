@@ -258,7 +258,7 @@ public class MorePhysicsBlockListener implements Listener {
 		    						if(event.getDirection().name().equalsIgnoreCase("up") && (ent.getRelative(0,-1,0).equals(block)))
 		    						{
 		    							if(e instanceof Player)
-		    								v.setY(v.getY()+(plugin.pistonStrength/2-(plugin.getTotalWeight((Player) e)*3)));
+		    								v.setY(v.getY()+(plugin.pistonStrength/2-(plugin.weights.get(((Player)e).getName())*3)));
 		    							else
 		    								v.setY(v.getY()+plugin.pistonStrength/2);
 		    							e.teleport(e.getLocation().add(0, 1, 0));	
@@ -293,13 +293,16 @@ public class MorePhysicsBlockListener implements Listener {
 			{
 				if(e.getLocation().distance(event.getBlock().getLocation()) < 2.2)
 				{
+					Player p = null;
+					if(e instanceof Player)
+						p = (Player)e;
 					v = e.getVelocity();
 					Block block = e.getLocation().getBlock();
 					Block piston = event.getBlock();
 					if(event.getDirection().name().equalsIgnoreCase("up") && (block.getRelative(0,-1,0).equals(piston)))
 					{
 						if(e instanceof Player)
-							v.setY(v.getY()+(plugin.pistonStrength/2-(plugin.getTotalWeight((Player) e)*3)));
+							v.setY(v.getY()+(plugin.pistonStrength/2-(plugin.weights.get(p.getName())*3)));
 						else
 							v.setY(v.getY()+plugin.pistonStrength/2);
 						e.teleport(e.getLocation().add(0, 1, 0));	
@@ -307,7 +310,7 @@ public class MorePhysicsBlockListener implements Listener {
 					else if(event.getDirection().name().equalsIgnoreCase("north") && (block.getRelative(1,0,0).equals(piston) || block.getRelative(1,1,0).equals(piston)))
 					{
 						if(e instanceof Player)
-							v.setX(v.getX()-(plugin.pistonStrength-(plugin.getTotalWeight((Player) e))));
+							v.setX(v.getX()-(plugin.pistonStrength-(plugin.weights.get(p.getName()))));
 						else
 							v.setX(v.getX()-plugin.pistonStrength);
 						e.teleport(e.getLocation().add(-1, 0, 0));
@@ -315,7 +318,7 @@ public class MorePhysicsBlockListener implements Listener {
 					else if(event.getDirection().name().equalsIgnoreCase("south") && (block.getRelative(-1,0,0).equals(piston) || block.getRelative(-1,1,0).equals(piston)))
 					{
 						if(e instanceof Player)
-							v.setX(v.getX()+(plugin.pistonStrength-(plugin.getTotalWeight((Player) e))));
+							v.setX(v.getX()+(plugin.pistonStrength-(plugin.weights.get(p.getName()))));
 						else
 							v.setX(v.getX()+plugin.pistonStrength);
 						e.teleport(e.getLocation().add(1, 0, 0));
@@ -323,7 +326,7 @@ public class MorePhysicsBlockListener implements Listener {
 					else if(event.getDirection().name().equalsIgnoreCase("west") && (block.getRelative(0,0,-1).equals(piston) || block.getRelative(0,1,-1).equals(piston)))
 					{
 						if(e instanceof Player)
-							v.setZ(v.getZ()+(plugin.pistonStrength-(plugin.getTotalWeight((Player) e))));
+							v.setZ(v.getZ()+(plugin.pistonStrength-(plugin.weights.get(p.getName()))));
 						else
 							v.setZ(v.getZ()+plugin.pistonStrength);
 						e.teleport(e.getLocation().add(0, 0, 1));
@@ -331,7 +334,7 @@ public class MorePhysicsBlockListener implements Listener {
 					else if(event.getDirection().name().equalsIgnoreCase("east") && (block.getRelative(0,0,1).equals(piston) || block.getRelative(0,1,1).equals(piston)))
 					{
 						if(e instanceof Player)
-							v.setZ(v.getZ()-(plugin.pistonStrength-(plugin.getTotalWeight((Player) e))));
+							v.setZ(v.getZ()-(plugin.pistonStrength-(plugin.weights.get(p.getName()))));
 						else
 							v.setZ(v.getZ()-plugin.pistonStrength);
 						e.teleport(e.getLocation().add(0, 0, -1));

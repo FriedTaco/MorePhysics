@@ -26,11 +26,14 @@ import org.bukkit.plugin.Plugin;
 	public class MorePhysics extends JavaPlugin {
 		public static final Logger log = Logger.getLogger("Minecraft");
 		private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();  
+		public ArrayList<String> hitPlayers = new ArrayList<String>();
 		public static ArrayList<Boat> sinking = new ArrayList<Boat>();
+		public HashMap<String,Double> weights = new HashMap<String,Double>();
 		public List<String> bouncyBlocks = new ArrayList<String>();
+		public String minecartDeathMessage = "";
 		public static PermissionHandler Permissions;
-		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true,pistonsC=true;		
-		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet,pistonStrength;
+		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true,pistonsC=true,minecarts=true,monstercart=true,playercart=true,animalcart=true;		
+		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet,pistonStrength,cartDamage;
 		static String mainDirectory = "plugins/MorePhysics";
 		static Properties properties = new Properties(); 
 		protected static FileConfiguration Config;
@@ -122,6 +125,18 @@ import org.bukkit.plugin.Plugin;
 	                Config.set("arrows.legs_modifier",.8);
 	            if(!Config.contains("arrows.feet_modifier"))
 	                Config.set("arrows.feet_modifier",.2);
+	            if(!Config.contains("minecarts.enabled"))
+	                Config.set("minecarts.enabled",true);
+	            if(!Config.contains("minecarts.death_message"))
+	                Config.set("minecarts.death_message","PLAYER never learned to not play on the tracks!");
+	            if(!Config.contains("minecarts.damage_players"))
+	                Config.set("minecarts.damage_players",true);
+	            if(!Config.contains("minecarts.damage_monsters"))
+	                Config.set("minecarts.damage_monsters",true);
+	            if(!Config.contains("minecarts.damage_animals"))
+	                Config.set("minecarts.damage_animals",true);
+	            if(!Config.contains("minecarts.damage_modifier"))
+	                Config.set("minecarts.damage_modifier",1.5);
 	            boats = Config.getBoolean("general.Boats_Sink", true);
 	            swimming = Config.getBoolean("general.Swimming_Affected", true);
 	            movement = Config.getBoolean("general.Movement_Affected", true);
@@ -156,6 +171,12 @@ import org.bukkit.plugin.Plugin;
 	          	exemptions = Config.getBoolean("general.Allow_Physics_Exemptions", true);
 	          	arrows = Config.getBoolean("arrows.enabled", true);
 	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", "").split(" "));
+	          	minecarts = Config.getBoolean("minecarts.enabled",true);
+	          	playercart = Config.getBoolean("minecarts.damage_players",true);
+	          	cartDamage = Config.getDouble("minecarts.damage_modifier",1.5);
+	          	monstercart = Config.getBoolean("minecarts.damage_monsters",true);
+	          	animalcart = Config.getBoolean("minecarts.damage_animals",true);
+	          	minecartDeathMessage = Config.getString("minecarts.death_message","PLAYER was hit by a minecart.");
 	            saveConfig();
 			 } catch(Exception e){
 				 
@@ -190,8 +211,6 @@ import org.bukkit.plugin.Plugin;
 	    }
 
 		public void recordEvent(PlayerLoginEvent event) {
-			// TODO Auto-generated method stub
-			
 		}
 		double weight(int id)
 	    {
