@@ -88,6 +88,8 @@ public class MorePhysicsVehicleListener implements Listener
 							{
 								if(v.getPassenger() != le)
 								{
+									Vector vel = le.getVelocity();
+					    			
 									if(le instanceof Player)
 						    		{
 						    			Player p = (Player) le;
@@ -97,11 +99,16 @@ public class MorePhysicsVehicleListener implements Listener
 					    			if(le instanceof Animals && plugin.animalcart)
 					    			{
 					    				le.damage(dmg);
+					    				vel.add(v.getVelocity().multiply(2.5).add(new Vector(0,.5,0)));
 					    			} else if(le instanceof Monster && plugin.monstercart) {
 					    				le.damage(dmg);
+					    				vel.add(v.getVelocity().multiply(2.5).add(new Vector(0,.5,0)));
 					    			} else if(le instanceof Player && plugin.playercart) {
 					    				le.damage(dmg);
+					    				vel.add(v.getVelocity().multiply(4.5).add(new Vector(0,.5,0)));
 					    			}
+					    			
+					    			le.setVelocity(vel);
 								}
 							}
 						}
