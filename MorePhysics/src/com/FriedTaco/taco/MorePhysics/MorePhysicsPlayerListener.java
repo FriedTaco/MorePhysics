@@ -70,7 +70,12 @@ public class MorePhysicsPlayerListener implements Listener
     		Block in = p.getWorld().getBlockAt(event.getTo()).getRelative(0, 1, 0);
 	    	if(in != null)
 	    	{
-	    		double modifier = plugin.weights.get(p.getName());
+	    		double modifier = 0;
+	    		try{
+	    		modifier = plugin.weights.get(p.getName());
+	    		} catch(Exception e) {
+	    			
+	    		}
 	    		if((in.getTypeId() == 9 || in.getTypeId() == 8))
 	    		{
 	    			if(plugin.swimming)

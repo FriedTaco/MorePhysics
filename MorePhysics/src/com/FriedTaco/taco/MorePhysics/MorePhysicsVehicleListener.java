@@ -117,52 +117,5 @@ public class MorePhysicsVehicleListener implements Listener
 			}
 		}
 	}
-    /*
-    @EventHandler
-    public void onVehilceEntityCollide(VehicleEntityCollisionEvent event)
-    {
-    	if(plugin.minecarts && event.getVehicle() instanceof Minecart)
-    	{
-	    	Entity e = event.getEntity();
-	    	if(e instanceof LivingEntity)
-	    	{
-	    		Vehicle v = event.getVehicle();
-	    		LivingEntity le = (LivingEntity) e;
-	    		boolean front = isInFrontOf(le,v);
-	    		if(front)
-	    		{
-		    		int dmg = (int) (event.getVehicle().getVelocity().length() * 20);
-		    		EntityDamageEvent damage = new EntityDamageEvent(le,DamageCause.ENTITY_ATTACK, dmg);
-		    		Bukkit.getPluginManager().callEvent(damage);
-		    		if(!damage.isCancelled())
-		    		{
-			    		if(e instanceof Player)
-			    		{
-			    			Player p = (Player) e;
-			    			if(dmg >= p.getHealth())
-			    				plugin.hitPlayers.add(p.getName());
-			    		}
-			    		if(dmg>2)
-			    		{
-			    			if(e instanceof Animals && plugin.animalcart)
-			    			{
-			    				le.damage(dmg);
-			    			} else if(e instanceof Monster && plugin.monstercart) {
-			    				le.damage(dmg);
-			    			} else if(e instanceof Player && plugin.playercart) {
-			    				le.damage(dmg);
-			    			}
-			  
-			    		}
-		    		}
-	    		}
-	    	}
-    	}
-    }
-    boolean isInFrontOf(LivingEntity l, Vehicle v) {
-    	double dot = v.getVelocity().normalize().dot(l.getLocation().toVector().subtract(v.getLocation().subtract(0,.5,0).toVector()).normalize());
-    	return Math.abs(dot) >= Math.cos(Math.PI/4);
-    	
-    }
-    */
+  
 }

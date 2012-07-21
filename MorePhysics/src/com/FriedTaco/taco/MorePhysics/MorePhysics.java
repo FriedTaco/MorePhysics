@@ -32,7 +32,7 @@ import org.bukkit.plugin.Plugin;
 		public List<String> bouncyBlocks = new ArrayList<String>();
 		public String minecartDeathMessage = "";
 		public static PermissionHandler Permissions;
-		public boolean movement=true,swimming=true,boats=true,pistons=true,exemptions=true,pistonsB=true,arrows=true,pistonsC=true,minecarts=true,monstercart=true,playercart=true,animalcart=true;		
+		public boolean movement=true,swimming=true,boats=true,pistonEntities=true,exemptions=true,pistonBlocks=true,arrows=true,pistonPushBlockEntities=true,minecarts=true,monstercart=true,playercart=true,animalcart=true;		
 		public double lhat,lshirt,lpants,lboots,ihat,ishirt,ipants,iboots,ghat,gshirt,gpants,gboots,dhat,dshirt,dpants,dboots,chat,cshirt,cpants,cboots,arhead,artorso,arlegs,arfeet,pistonStrength,cartDamage;
 		static String mainDirectory = "plugins/MorePhysics";
 		static Properties properties = new Properties(); 
@@ -63,14 +63,14 @@ import org.bukkit.plugin.Plugin;
 	            	Config.set("general.Movement_Affected", true);
 	            if(!Config.contains("general.Swimming_Affected"))
 	            	Config.set("general.Swimming_Affected", true);
-	            if(!Config.contains("pistons.Pistons_Launch_Entities"))
-	            	Config.set("pistons.Pistons_Launch_Entities", true);
-	            if(!Config.contains("pistons.Pistons_Launch_Blocks"))
-	            	Config.set("pistons.Pistons_Launch_Blocks", true);
-	            if(!Config.contains("pistons.Piston_Strength"))
-	            	Config.set("pistons.Piston_Strength", 4.0);
-	            if(!Config.contains("pistons.Pushed_Blocks_Launch_Entities"))
-	            	Config.set("pistons.Pushed_Blocks_Launch_Entities", true);
+	            if(!Config.contains("pistonEntities.Pistons_Launch_Entities"))
+	            	Config.set("pistonEntities.Pistons_Launch_Entities", true);
+	            if(!Config.contains("pistonEntities.Pistons_Launch_Blocks"))
+	            	Config.set("pistonEntities.Pistons_Launch_Blocks", true);
+	            if(!Config.contains("pistonEntities.Piston_Strength"))
+	            	Config.set("pistonEntities.Piston_Strength", 4.0);
+	            if(!Config.contains("pistonEntities.Pushed_Blocks_Launch_Entities"))
+	            	Config.set("pistonEntities.Pushed_Blocks_Launch_Entities", true);
 	            if(!Config.contains("general.Allow_Physics_Exemptions"))
 	            	Config.set("general.Allow_Physics_Exemptions", true);
 	            if(!Config.contains("general.Bounce_Causing_Blocks"))
@@ -164,13 +164,13 @@ import org.bukkit.plugin.Plugin;
 	          	artorso = Config.getDouble("arrows.torso_modifier",2);
 	          	arlegs = Config.getDouble("arrows.legs_modifier",.8);
 	          	arfeet = Config.getDouble("arrows.feet_modifier",.2);
-	          	pistons = Config.getBoolean("pistons.Pistons_Launch_Entities", true);
-	          	pistonsB = Config.getBoolean("pistons.Pistons_Launch_Blocks", true);
-	          	pistonsC = Config.getBoolean("pistons.Pushed_Blocks_Launch_Entities", true);
-	          	pistonStrength = Config.getDouble("pistons.Piston_Strength", 4.0);
+	          	pistonEntities = Config.getBoolean("pistonEntities.Pistons_Launch_Entities", true);
+	          	pistonBlocks = Config.getBoolean("pistonEntities.Pistons_Launch_Blocks", true);
+	          	pistonPushBlockEntities = Config.getBoolean("pistonEntities.Pushed_Blocks_Launch_Entities", true);
+	          	pistonStrength = Config.getDouble("pistonEntities.Piston_Strength", 4.0);
 	          	exemptions = Config.getBoolean("general.Allow_Physics_Exemptions", true);
 	          	arrows = Config.getBoolean("arrows.enabled", true);
-	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", "").split(" "));
+	          	bouncyBlocks = Arrays.asList(Config.getString("general.Bounce_Causing_Blocks", " ").split(" "));
 	          	minecarts = Config.getBoolean("minecarts.enabled",true);
 	          	playercart = Config.getBoolean("minecarts.damage_players",true);
 	          	cartDamage = Config.getDouble("minecarts.damage_modifier",1.5);
