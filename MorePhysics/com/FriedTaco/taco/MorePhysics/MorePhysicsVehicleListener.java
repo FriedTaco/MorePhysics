@@ -62,25 +62,36 @@ public class MorePhysicsVehicleListener implements Listener
 				if(underType == Material.WATER || underType == Material.STATIONARY_WATER)
 				{
 					Vector vec  = event.getVehicle().getVelocity();
-					vec.subtract(new Vector(0,.03,0));
+					vec.subtract(new Vector(0,.02,0));
 					event.getVehicle().setVelocity(vec);
 				}
 			}
 		}
 		if(plugin.minecarts && v instanceof Minecart)
 		{
-			if(v.getVelocity().length() > .1)
+                    Vector vel = v.getVelocity();
+                   // Vector vel = ent.getVelocity().subtract(v.getVelocity());
+                    vel = vel.normalize();
+                    double vehicleX = vel.getX();
+                    double vehicleY = vel.getY();
+                    double vehicleZ = vel.getZ();
+			if(vel.length() > .1)
 			{
-				for(Entity ent : v.getNearbyEntities(.4, .75, .4))
+				for(Entity ent : v.getNearbyEntities(Math.abs(vehicleX)/2, Math.abs(vehicleY)/2, Math.abs(vehicleZ)/2))
 				{
-					if(ent instanceof LivingEntity)
+					if(ent instanceof LivingEntity && v.getPassenger() != ent)
 					{
 						int dmg = (int) (event.getVehicle().getVelocity().length() * (10*plugin.cartDamage));
 						LivingEntity le = (LivingEntity) ent;
-			    		EntityDamageEvent damage = new EntityDamageEvent(le,DamageCause.ENTITY_ATTACK, dmg);
-			    		Bukkit.getPluginManager().callEvent(damage);
-			    		if(!damage.isCancelled())
-			    		{
+                                                //System.out.println("X: " + vehicleX + " Y: " + vehicleY + " Z: " + vehicleZ);
+                                                //System.out.println(le.getVelocity().subtract(v.getVelocity()));
+                                                //if(vehicleX<1 && vehicleY<1 && vehicleZ<1)
+                                               //     return;
+                                                
+                                                EntityDamageEvent damage = new EntityDamageEvent(le,DamageCause.ENTITY_ATTACK, dmg);
+                                                Bukkit.getPluginManager().callEvent(damage);
+                                                if(!damage.isCancelled())
+                                                {
 							Location to = event.getTo();
 							Location from = event.getFrom();
 							Location loc = ent.getLocation();
@@ -88,7 +99,7 @@ public class MorePhysicsVehicleListener implements Listener
 							{
 								if(v.getPassenger() != le)
 								{
-									Vector vel = le.getVelocity();
+									Vector vel1 = le.getVelocity().clone();
 					    			
 									if(le instanceof Player)
 						    		{
@@ -99,16 +110,16 @@ public class MorePhysicsVehicleListener implements Listener
 					    			if(le instanceof Animals && plugin.animalcart)
 					    			{
 					    				le.damage(dmg);
-					    				vel.add(v.getVelocity().multiply(2.5).add(new Vector(0,.5,0)));
+					    				vel1.add(v.getVelocity().multiply(1.5).add(new Vector(0,1.5,0)));
 					    			} else if(le instanceof Monster && plugin.monstercart) {
 					    				le.damage(dmg);
-					    				vel.add(v.getVelocity().multiply(2.5).add(new Vector(0,.5,0)));
+					    				vel1.add(v.getVelocity().multiply(2.5).add(new Vector(0,1.5,0)));
 					    			} else if(le instanceof Player && plugin.playercart) {
 					    				le.damage(dmg);
-					    				vel.add(v.getVelocity().multiply(4.5).add(new Vector(0,.5,0)));
+					    				vel1.add(v.getVelocity().multiply(2.5).add(new Vector(0,1.5,0)));
 					    			}
 					    			
-					    			le.setVelocity(vel);
+					    			le.setVelocity(vel1);
 								}
 							}
 						}
