@@ -94,6 +94,7 @@ public class MorePhysicsBlockListener implements Listener {
 					diff.multiply(plugin.pistonStrength/5000); // Block is too fast, need to slow it down a bit.
 					v.add(diff);
 					f.setVelocity(v);
+                                        
                                     }
                                     /*
 		    		// Old code, for use if sand won't work. CURRENTLY IN USE.
