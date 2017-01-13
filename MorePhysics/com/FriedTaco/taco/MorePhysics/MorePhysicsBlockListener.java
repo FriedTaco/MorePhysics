@@ -68,12 +68,19 @@ public class MorePhysicsBlockListener implements Listener {
                             Block block = b.get(i);
                                 if(block.getType().equals(Material.SAND) || block.getType().equals(Material.GRAVEL))
 	    			{
+                                    event.setCancelled(true);
+                                    Location tmp = block.getLocation();
+                                    tmp.setY(tmp.getY()+0.1);
                                     MaterialData mat = new MaterialData(block.getType());
-                                    FallingBlock f = w.spawnFallingBlock(block.getLocation(), mat);
+                                    FallingBlock f = w.spawnFallingBlock(tmp, mat);
                                     v = f.getVelocity().clone();
                                     // block.setType(Material.AIR); // Not working?
+                                    // plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                                    //  public void run() {
                                     block.setType(Material.AIR);
-                                    block.getState().update(true);
+                                    block.getState().update();
+                                    //     }
+                                    //}, 20L);
                                     Location loc = block.getLocation();
                                     Block loc1 = f.getLocation().getBlock();
                                     Block loc2 = loc1.getRelative(BlockFace.UP);
@@ -84,11 +91,10 @@ public class MorePhysicsBlockListener implements Listener {
                                     if(loc1.equals(rel) || loc2.equals(rel))
                                     {
 					Vector diff = rel.getLocation().subtract(piston.getLocation()).toVector();
-					diff.multiply(plugin.pistonStrength/2); // Block is too fast, need to slow it down a bit.
+					diff.multiply(plugin.pistonStrength/5000); // Block is too fast, need to slow it down a bit.
 					v.add(diff);
 					f.setVelocity(v);
                                     }
-                                    
                                     /*
 		    		// Old code, for use if sand won't work. CURRENTLY IN USE.
                                     if(event.getDirection().name().equalsIgnoreCase("up"))
